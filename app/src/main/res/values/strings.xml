@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">工具箱</string>
+    <string name="app_title">简单计数器</string>
+    <string name="increase">+</string>
+    <string name="decrease">-</string>
+    <string name="reset">重置</string>
+    <string name="hint">数据会自动保存</string>
+
+    <!-- 底部导航菜单 -->
+    <string name="nav_home">主页</string>
+    <string name="nav_tools">工具</string>
+    <string name="nav_profile">个人</string>
+    <string name="nav_login">登录</string>
+
+    <!-- 工具名称 -->
+    <string name="tool_counter">计数器</string>
+    <string name="tool_calculator">计算器</string>
+    <string name="tool_stopwatch">秒表</string>
+    <string name="tool_timer">计时器</string>
+    <string name="tool_todo">待办事项</string>
+</resources>
