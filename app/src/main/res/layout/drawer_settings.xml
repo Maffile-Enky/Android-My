@@ -17,7 +17,7 @@
         android:background="@color/primary"
         android:padding="16dp">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/ivCloseSettings"
             android:layout_width="24dp"
             android:layout_height="24dp"
