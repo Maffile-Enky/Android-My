@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tvBannerText"
@@ -30,7 +30,7 @@
         android:layout_height="60dp"
         android:layout_gravity="top|end"
         android:layout_margin="12dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:src="@mipmap/ic_launcher"
         android:background="@drawable/circle_background"
         android:padding="8dp"
         android:visibility="gone" />

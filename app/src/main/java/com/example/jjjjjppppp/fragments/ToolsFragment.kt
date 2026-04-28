@@ -8,12 +8,17 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.jjjjjppppp.CounterActivity
-import com.example.jjjjjppppp.R
+import com.example.jjjjjppppp.BmiCalculatorActivity
 import com.example.jjjjjppppp.CalculatorActivity
+import com.example.jjjjjppppp.CounterActivity
+import com.example.jjjjjppppp.NotesActivity
+import com.example.jjjjjppppp.R
+import com.example.jjjjjppppp.RandomNumberActivity
 import com.example.jjjjjppppp.StopwatchActivity
 import com.example.jjjjjppppp.TimerActivity
 import com.example.jjjjjppppp.TodoActivity
+import com.example.jjjjjppppp.UnitConverterActivity
+import com.example.jjjjjppppp.WordCounterActivity
 import androidx.cardview.widget.CardView
 
 class ToolsFragment : Fragment() {
@@ -42,7 +47,7 @@ class ToolsFragment : Fragment() {
             ToolInfo(
                 name = getString(R.string.tool_counter),
                 description = "简单实用的计数工具，支持数据保存",
-                icon = R.drawable.ic_launcher_foreground,
+                icon = R.mipmap.ic_launcher,
                 activityClass = CounterActivity::class.java
             ),
             ToolInfo(
@@ -68,6 +73,36 @@ class ToolsFragment : Fragment() {
                 description = "待办事项管理，记录日常任务",
                 icon = R.drawable.ic_todo,
                 activityClass = TodoActivity::class.java
+            ),
+            ToolInfo(
+                name = getString(R.string.tool_random),
+                description = "生成指定范围的随机数，支持掷骰子",
+                icon = R.drawable.ic_random,
+                activityClass = RandomNumberActivity::class.java
+            ),
+            ToolInfo(
+                name = getString(R.string.tool_converter),
+                description = "长度、重量、温度单位换算",
+                icon = R.drawable.ic_convert,
+                activityClass = UnitConverterActivity::class.java
+            ),
+            ToolInfo(
+                name = getString(R.string.tool_notes),
+                description = "随时记录想法和重要信息",
+                icon = R.drawable.ic_note,
+                activityClass = NotesActivity::class.java
+            ),
+            ToolInfo(
+                name = getString(R.string.tool_bmi),
+                description = "计算身体质量指数，评估体重状态",
+                icon = R.drawable.ic_bmi,
+                activityClass = BmiCalculatorActivity::class.java
+            ),
+            ToolInfo(
+                name = getString(R.string.tool_word_count),
+                description = "统计文本的字符数、中文数和单词数",
+                icon = R.drawable.ic_word_count,
+                activityClass = WordCounterActivity::class.java
             )
         )
 

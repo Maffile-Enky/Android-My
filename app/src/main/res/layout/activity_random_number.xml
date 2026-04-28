@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="随机数生成"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="72sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cardRange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvResult"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="范围设置"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/counter_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最小值"
+                    android:textSize="14sp"
+                    android:textColor="@color/hint_text"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/etMin"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:inputType="number"
+                    android:text="1"
+                    android:gravity="center"
+                    android:background="@drawable/display_background"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最大值"
+                    android:textSize="14sp"
+                    android:textColor="@color/hint_text"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp" />
+
+                <EditText
+                    android:id="@+id/etMax"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:inputType="number"
+                    android:text="100"
+                    android:gravity="center"
+                    android:background="@drawable/display_background"
+                    android:layout_marginStart="8dp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnGenerate"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="生成随机数"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/primary"
+                app:cornerRadius="8dp"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/btnDice"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="掷骰子 (1-6)"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/accent"
+                app:cornerRadius="8dp"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

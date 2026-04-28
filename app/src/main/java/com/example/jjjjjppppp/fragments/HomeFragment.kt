@@ -111,7 +111,7 @@ class HomeFragment : Fragment() {
         announcements.add(Announcement(
             title = "欢迎使用工具箱",
             description = "实用工具，简单生活",
-            imageRes = R.drawable.ic_launcher_foreground,
+            imageRes = R.mipmap.ic_launcher,
             isLogoPage = true
         ))
     }
@@ -131,7 +131,7 @@ class HomeFragment : Fragment() {
                             announcements.add(Announcement(
                                 title = items[0],
                                 description = items[1],
-                                imageRes = R.drawable.ic_launcher_foreground,
+                                imageRes = R.mipmap.ic_launcher,
                                 isLogoPage = false
                             ))
                         }
@@ -295,7 +295,7 @@ class HomeFragment : Fragment() {
         announcements.add(Announcement(
             title = title,
             description = description,
-            imageRes = R.drawable.ic_launcher_foreground,
+            imageRes = R.mipmap.ic_launcher,
             isLogoPage = false
         ))
         bannerAdapter?.notifyDataSetChanged()

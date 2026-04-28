@@ -43,6 +43,21 @@
         <activity
             android:name=".TodoActivity"
             android:exported="false" />
+        <activity
+            android:name=".RandomNumberActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UnitConverterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NotesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BmiCalculatorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WordCounterActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

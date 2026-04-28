@@ -4,32 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="2dp"
     app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="14dp"
         android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/ivToolIcon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="10dp"
             android:background="@drawable/tool_icon_background"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@mipmap/ic_launcher"
             android:contentDescription="工具图标" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="14dp"
             android:orientation="vertical">
 
             <TextView
@@ -37,9 +37,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="工具名称"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/primary"
+                android:textColor="@color/counter_text"
                 tools:text="计数器" />
 
             <TextView
@@ -47,18 +47,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="工具描述"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@color/hint_text"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
+                android:maxLines="1"
+                android:ellipsize="end"
                 tools:text="简单实用的计数工具" />
 
         </LinearLayout>
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/ic_arrow_right"
             android:tint="@color/hint_text"
+            android:layout_marginStart="8dp"
             android:contentDescription="进入工具" />
 
     </LinearLayout>

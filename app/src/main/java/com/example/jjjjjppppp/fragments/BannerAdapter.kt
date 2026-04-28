@@ -42,7 +42,7 @@ class BannerAdapter(
                     // Logo页面显示
                     tvBannerText.text = "${announcement.title}\n${announcement.description}"
                     ivLogoMark.visibility = View.VISIBLE
-                    ivBannerImage.setImageResource(R.drawable.ic_launcher_foreground)
+                    ivBannerImage.setImageResource(R.mipmap.ic_launcher)
                 } else {
                     // 普通公告页面
                     tvBannerText.text = announcement.description
