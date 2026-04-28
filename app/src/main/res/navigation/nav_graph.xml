@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
-            app:destination="@id/nav_login" />
+            app:destination="@id/nav_mine" />
     </fragment>
 
     <fragment
@@ -22,15 +22,15 @@
         tools:layout="@layout/fragment_tools" />
 
     <fragment
-        android:id="@+id/nav_profile"
-        android:name="com.example.jjjjjppppp.fragments.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        android:id="@+id/nav_community"
+        android:name="com.example.jjjjjppppp.fragments.CommunityFragment"
+        android:label="fragment_community"
+        tools:layout="@layout/fragment_community" />
 
     <fragment
-        android:id="@+id/nav_login"
-        android:name="com.example.jjjjjppppp.fragments.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        android:id="@+id/nav_mine"
+        android:name="com.example.jjjjjppppp.fragments.MineFragment"
+        android:label="fragment_mine"
+        tools:layout="@layout/fragment_mine" />
 
 </navigation>

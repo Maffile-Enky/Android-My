@@ -9,8 +9,8 @@
     <!-- 底部导航菜单 -->
     <string name="nav_home">主页</string>
     <string name="nav_tools">工具</string>
-    <string name="nav_profile">个人</string>
-    <string name="nav_login">登录</string>
+    <string name="nav_community">社区</string>
+    <string name="nav_mine">我的</string>
 
     <!-- 工具名称 -->
     <string name="tool_counter">计数器</string>
