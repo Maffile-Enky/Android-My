@@ -10,7 +10,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BMI 计算器"
+        android:text="@string/tool_bmi"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/primary"
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="身高 (cm)"
+                android:text="@string/height_label"
                 android:textSize="16sp"
                 android:textColor="@color/counter_text" />
 
@@ -43,7 +43,7 @@
                 android:id="@+id/etHeight"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="例如 170"
+                android:hint="@string/height_hint"
                 android:inputType="numberDecimal"
                 android:background="@drawable/display_background"
                 android:padding="12dp"
@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="体重 (kg)"
+                android:text="@string/weight_label"
                 android:textSize="16sp"
                 android:textColor="@color/counter_text"
                 android:layout_marginTop="16dp" />
@@ -61,7 +61,7 @@
                 android:id="@+id/etWeight"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="例如 65"
+                android:hint="@string/weight_hint"
                 android:inputType="numberDecimal"
                 android:background="@drawable/display_background"
                 android:padding="12dp"
@@ -71,7 +71,7 @@
                 android:id="@+id/btnCalculate"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="计算 BMI"
+                android:text="@string/calc_bmi"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/primary"
                 app:cornerRadius="8dp"
@@ -110,7 +110,7 @@
                 android:id="@+id/tvBmiCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="请输入身高体重"
+                android:text="@string/word_count_empty"
                 android:textSize="18sp"
                 android:textColor="@color/hint_text"
                 android:layout_marginTop="8dp" />

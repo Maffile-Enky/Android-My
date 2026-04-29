@@ -59,7 +59,7 @@ class TimerActivity : AppCompatActivity() {
 
     private fun startTimer() {
         if (timeLeft <= 0) {
-            Toast.makeText(this, "请先设置时间", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.please_set_time), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -73,14 +73,14 @@ class TimerActivity : AppCompatActivity() {
                 timeLeft = 0
                 updateTimeDisplay(timeLeft)
                 isTimerRunning = false
-                btnStart.text = "开始"
+                btnStart.text = getString(R.string.start)
                 btnStart.backgroundTintList = ColorStateList.valueOf(getColor(R.color.increase_btn))
                 playAlarm()
             }
         }.start()
 
         isTimerRunning = true
-        btnStart.text = "暂停"
+        btnStart.text = getString(R.string.pause)
         btnStart.backgroundTintList = ColorStateList.valueOf(getColor(R.color.negative_count))
         btnSet.isEnabled = false
     }
@@ -88,7 +88,7 @@ class TimerActivity : AppCompatActivity() {
     private fun pauseTimer() {
         countDownTimer?.cancel()
         isTimerRunning = false
-        btnStart.text = "继续"
+        btnStart.text = getString(R.string.resume)
         btnStart.backgroundTintList = ColorStateList.valueOf(getColor(R.color.increase_btn))
         btnSet.isEnabled = true
     }
@@ -98,7 +98,7 @@ class TimerActivity : AppCompatActivity() {
         timeLeft = timeInMillis
         updateTimeDisplay(timeLeft)
         isTimerRunning = false
-        btnStart.text = "开始"
+        btnStart.text = getString(R.string.start)
         btnStart.backgroundTintList = ColorStateList.valueOf(getColor(R.color.increase_btn))
         btnSet.isEnabled = true
     }
@@ -117,14 +117,14 @@ class TimerActivity : AppCompatActivity() {
         npSeconds.value = ((timeInMillis % 60000) / 1000).toInt()
 
         AlertDialog.Builder(this)
-            .setTitle("设置时间")
+            .setTitle(getString(R.string.set_time))
             .setView(dialogView)
-            .setPositiveButton("确定") { _, _ ->
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 timeInMillis = (npMinutes.value * 60000 + npSeconds.value * 1000).toLong()
                 timeLeft = timeInMillis
                 updateTimeDisplay(timeLeft)
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
@@ -145,7 +145,7 @@ class TimerActivity : AppCompatActivity() {
                 mediaPlayer = null
             }
         } catch (e: Exception) {
-            Toast.makeText(this, "时间到！", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.time_up), Toast.LENGTH_LONG).show()
         }
     }
 

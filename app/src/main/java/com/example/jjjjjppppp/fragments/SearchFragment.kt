@@ -32,9 +32,9 @@ class SearchFragment : Fragment() {
         btnSearch.setOnClickListener {
             val searchTerm = etSearch.text.toString()
             if (searchTerm.isNotEmpty()) {
-                Toast.makeText(requireContext(), "搜索: $searchTerm", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.search_format, searchTerm), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "请输入搜索内容", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.enter_search_content), Toast.LENGTH_SHORT).show()
             }
         }
     }

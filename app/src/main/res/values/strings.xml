@@ -1,26 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">工具箱</string>
     <string name="app_title">简单计数器</string>
-    <string name="increase">+</string>
-    <string name="decrease">-</string>
+
+    <!-- ==================== 通用 ==================== -->
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="close">关闭</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="complete">完成</string>
+    <string name="load">加载</string>
+    <string name="clear">清空</string>
     <string name="reset">重置</string>
+    <string name="start">开始</string>
+    <string name="pause">暂停</string>
+    <string name="resume">继续</string>
+    <string name="add">添加</string>
+    <string name="search">搜索</string>
+    <string name="settings">设置</string>
+    <string name="author">作者</string>
+    <string name="time">时间</string>
+    <string name="title_label">标题</string>
+    <string name="content_label">内容</string>
     <string name="hint">数据会自动保存</string>
 
-    <!-- 底部导航菜单 -->
+    <!-- ==================== 底部导航 ==================== -->
     <string name="nav_home">主页</string>
     <string name="nav_tools">工具</string>
     <string name="nav_community">社区</string>
     <string name="nav_mine">我的</string>
 
-    <!-- 工具名称 -->
+    <!-- ==================== 主页 ==================== -->
+    <string name="welcome_title">欢迎使用工具箱</string>
+    <string name="welcome_desc">实用工具，简单生活</string>
+    <string name="add_announcement">新增公告</string>
+    <string name="delete_announcement">删除公告</string>
+    <string name="add_announcement_title">新增公告</string>
+    <string name="announcement_title_hint">输入公告标题</string>
+    <string name="announcement_content_hint">输入公告内容</string>
+    <string name="announcement_title_label">公告标题</string>
+    <string name="announcement_content_label">公告内容</string>
+    <string name="fill_complete_info">请填写完整信息</string>
+    <string name="announcement_added">公告已添加</string>
+    <string name="announcement_deleted">公告已删除</string>
+    <string name="delete_announcement_confirm">确定要删除这条公告吗？</string>
+    <string name="cannot_delete_logo">无法删除Logo页面</string>
+    <string name="latest_version">已是最新版本 v0.2.0</string>
+    <string name="about_info">工具箱 v0.2.0\n简单实用的工具集合</string>
+    <string name="thanks_feedback">感谢您的反馈！</string>
+    <string name="privacy_policy_text">隐私政策：保护用户隐私是我们的责任</string>
+    <string name="cache_cleared">缓存已清除</string>
+
+    <!-- ==================== 设置 ==================== -->
+    <string name="appearance_section">外观设置</string>
+    <string name="general_section">通用设置</string>
+    <string name="about_section">关于</string>
+    <string name="theme_settings">主题设置</string>
+    <string name="language_settings">语言设置</string>
+    <string name="check_update">检查更新</string>
+    <string name="about_us">关于我们</string>
+    <string name="feedback">意见反馈</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="theme_light">浅色</string>
+    <string name="theme_dark">深色</string>
+    <string name="theme_system">跟随系统</string>
+    <string name="select_theme">选择主题</string>
+    <string name="select_language">选择语言</string>
+    <string name="lang_chinese">简体中文</string>
+    <string name="version_text">工具箱 v0.2.0</string>
+    <string name="version_short">v0.2.0</string>
+
+    <!-- ==================== 工具名称 ==================== -->
+    <string name="toolbox_title">工具箱</string>
     <string name="tool_counter">计数器</string>
     <string name="tool_calculator">计算器</string>
     <string name="tool_stopwatch">秒表</string>
     <string name="tool_timer">计时器</string>
     <string name="tool_todo">待办事项</string>
-    <string name="tool_random">随机数</string>
+    <string name="tool_random">随机数生成</string>
     <string name="tool_converter">单位换算</string>
     <string name="tool_notes">便签</string>
-    <string name="tool_bmi">BMI计算</string>
+    <string name="tool_bmi">BMI 计算器</string>
     <string name="tool_word_count">字数统计</string>
+
+    <!-- ==================== 工具描述 ==================== -->
+    <string name="desc_counter">简单实用的计数工具，支持数据保存</string>
+    <string name="desc_calculator">基础计算器，支持四则运算</string>
+    <string name="desc_stopwatch">精准秒表，支持计次功能</string>
+    <string name="desc_timer">倒计时工具，设置提醒</string>
+    <string name="desc_todo">待办事项管理，记录日常任务</string>
+    <string name="desc_random">生成指定范围的随机数，支持掷骰子</string>
+    <string name="desc_converter">长度、重量、温度单位换算</string>
+    <string name="desc_notes">随时记录想法和重要信息</string>
+    <string name="desc_bmi">计算身体质量指数，评估体重状态</string>
+    <string name="desc_word_count">统计文本的字符数、中文数和单词数</string>
+
+    <!-- ==================== 计数器 ==================== -->
+    <string name="increase">+</string>
+    <string name="decrease">-</string>
+
+    <!-- ==================== 秒表 ==================== -->
+    <string name="lap">计次</string>
+    <string name="lap_format">第%1$d次: %2$s</string>
+
+    <!-- ==================== 计时器 ==================== -->
+    <string name="set_time">设置时间</string>
+    <string name="please_set_time">请先设置时间</string>
+    <string name="time_up">时间到！</string>
+
+    <!-- ==================== 待办事项 ==================== -->
+    <string name="enter_todo_hint">输入待办事项…</string>
+    <string name="no_todos">暂无待办事项</string>
+    <string name="select_action">选择操作</string>
+    <string name="edit_todo">编辑待办事项</string>
+
+    <!-- ==================== 随机数 ==================== -->
+    <string name="range_settings">范围设置</string>
+    <string name="min_value">最小值</string>
+    <string name="max_value">最大值</string>
+    <string name="generate_random">生成随机数</string>
+    <string name="roll_dice">掷骰子 (1-6)</string>
+
+    <!-- ==================== 单位换算 ==================== -->
+    <string name="enter_value">输入数值</string>
+    <string name="enter_valid_value">请输入有效数值</string>
+    <string name="category_length">长度</string>
+    <string name="category_weight">重量</string>
+    <string name="category_temperature">温度</string>
+    <string name="length_options">米 → 厘米,厘米 → 米,米 → 千米,千米 → 米,英尺 → 米,米 → 英尺</string>
+    <string name="weight_options">千克 → 克,克 → 千克,千克 → 磅,磅 → 千克</string>
+    <string name="temperature_options">摄氏度 → 华氏度,华氏度 → 摄氏度</string>
+
+    <!-- ==================== 便签 ==================== -->
+    <string name="note_title_hint">标题</string>
+    <string name="note_content_hint">输入内容…</string>
+    <string name="saved">已保存</string>
+    <string name="loaded">已加载</string>
+
+    <!-- ==================== BMI 计算器 ==================== -->
+    <string name="height_label">身高 (cm)</string>
+    <string name="height_hint">例如 170</string>
+    <string name="weight_label">体重 (kg)</string>
+    <string name="weight_hint">例如 65</string>
+    <string name="calc_bmi">计算 BMI</string>
+    <string name="enter_valid_height_weight">请输入有效的身高体重</string>
+    <string name="normal_range">正常范围: %s</string>
+    <string name="underweight">偏瘦</string>
+    <string name="normal">正常</string>
+    <string name="overweight">偏胖</string>
+    <string name="obese">肥胖</string>
+
+    <!-- ==================== 字数统计 ==================== -->
+    <string name="text_hint">输入或粘贴文本…</string>
+    <string name="char_count">字符数</string>
+    <string name="chinese_count">中文字数</string>
+    <string name="word_count_label">单词数</string>
+    <string name="word_count_empty">请输入身高体重</string>
+
+    <!-- ==================== 搜索 ==================== -->
+    <string name="search_page">搜索页面</string>
+    <string name="search_hint">输入搜索内容…</string>
+    <string name="search_format">搜索: %s</string>
+    <string name="enter_search_content">请输入搜索内容</string>
+
+    <!-- ==================== 登录/注册 ==================== -->
+    <string name="login_title">用户登录</string>
+    <string name="login_subtitle">欢迎回来，请登录您的账号</string>
+    <string name="username_hint">用户名</string>
+    <string name="password_hint">密码</string>
+    <string name="btn_login">登 录</string>
+    <string name="register_new_account">注册新账号</string>
+    <string name="register_title">注册新账号</string>
+    <string name="register_username_hint">用户名 (至少3个字符)</string>
+    <string name="register_password_hint">密码 (至少4个字符)</string>
+    <string name="register_confirm_hint">确认密码</string>
+    <string name="register_btn">注册</string>
+    <string name="logged_in_welcome">已登录，欢迎回来，%s</string>
+    <string name="logged_in_label">已登录</string>
+    <string name="logout">退出登录</string>
+    <string name="logged_out">已退出登录</string>
+    <string name="login_success">登录成功，欢迎 %s</string>
+    <string name="enter_username_password">请输入用户名和密码</string>
+    <string name="user_not_found">用户不存在，请先注册</string>
+    <string name="wrong_password">密码错误</string>
+    <string name="username_too_short">用户名至少需要3个字符</string>
+    <string name="password_too_short">密码至少需要4个字符</string>
+    <string name="password_mismatch">两次密码输入不一致</string>
+    <string name="username_exists">用户名已存在，请更换</string>
+    <string name="register_success">注册成功，已自动登录</string>
+
+    <!-- ==================== 个人中心/资料 ==================== -->
+    <string name="profile_center">个人中心</string>
+    <string name="change_avatar">点击更换头像</string>
+    <string name="nickname_hint">昵称</string>
+    <string name="gender_label">性别</string>
+    <string name="gender_male">男</string>
+    <string name="gender_female">女</string>
+    <string name="birthday_hint">生日 (例如 1990-01-01)</string>
+    <string name="phone_hint">手机号</string>
+    <string name="email_hint">邮箱</string>
+    <string name="address_hint">地址</string>
+    <string name="bio_hint">个性签名</string>
+    <string name="save_profile">保存信息</string>
+    <string name="profile_saved">个人信息已保存</string>
+
+    <!-- ==================== 社区 ==================== -->
+    <string name="new_post_title">发布新帖子</string>
+    <string name="post_title_hint">标题</string>
+    <string name="post_content_hint">内容</string>
+    <string name="publish_btn">发布</string>
+    <string name="publish_success">发布成功</string>
+    <string name="enter_post_title">请输入标题</string>
+    <string name="enter_post_content">请输入内容</string>
+    <string name="anonymous_user">匿名用户</string>
+    <string name="post_detail_format">作者：%1$s\n时间：%2$s\n\n%3$s</string>
+    <string name="post_title_placeholder">帖子标题</string>
+    <string name="post_content_placeholder">内容预览</string>
+    <string name="tool_name_placeholder">工具名称</string>
+    <string name="tool_desc_placeholder">工具描述</string>
+    <string name="banner_content_placeholder">公告内容</string>
+    <string name="welcome_splash">欢迎使用</string>
+
+    <!-- ==================== 社区示例数据 ==================== -->
+    <string name="sample_author_admin">管理员</string>
+    <string name="sample_title_welcome">欢迎来到社区</string>
+    <string name="sample_content_welcome">这是第一条社区帖子，欢迎大家交流讨论工具使用心得！</string>
+    <string name="sample_author_xiaoming">小明</string>
+    <string name="sample_title_counter">计数器使用技巧</string>
+    <string name="sample_content_counter">长按+号可以快速增加，数据会自动保存不会丢失。</string>
+    <string name="sample_author_zhangsan">用户张三</string>
+    <string name="sample_title_feature">新功能建议</string>
+    <string name="sample_content_feature">希望增加深色模式切换功能和更多实用工具。</string>
+    <string name="sample_author_fitness">健身达人</string>
+    <string name="sample_title_bmi">BMI计算器心得</string>
+    <string name="sample_content_bmi">这个工具计算结果很准确，推荐大家使用！</string>
+    <string name="sample_author_daily">日常用户</string>
+    <string name="sample_title_checkin">打卡签到</string>
+    <string name="sample_content_checkin">大家今天用了哪个工具？我用了倒计时煮泡面！</string>
+
+    <!-- ==================== 单位名称 ==================== -->
+    <string name="unit_cm">厘米</string>
+    <string name="unit_km">千米</string>
+    <string name="unit_m">米</string>
+    <string name="unit_ft">英尺</string>
+    <string name="unit_in">英寸</string>
+    <string name="unit_g">克</string>
+    <string name="unit_kg">千克</string>
+    <string name="unit_lb">磅</string>
+    <string name="unit_oz">盎司</string>
+    <string name="unit_celsius">摄氏度</string>
+    <string name="unit_fahrenheit">华氏度</string>
+    <string name="unit_kelvin">开尔文</string>
 </resources>

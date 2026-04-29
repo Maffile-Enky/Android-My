@@ -11,7 +11,7 @@
         android:id="@+id/tvToolsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="工具箱"
+        android:text="@string/toolbox_title"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/primary"

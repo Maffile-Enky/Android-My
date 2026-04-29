@@ -46,7 +46,7 @@ class ProfileFragment : Fragment() {
 
         btnSave.setOnClickListener {
             saveProfile()
-            Toast.makeText(requireContext(), "个人信息已保存", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.profile_saved), Toast.LENGTH_SHORT).show()
         }
     }
 

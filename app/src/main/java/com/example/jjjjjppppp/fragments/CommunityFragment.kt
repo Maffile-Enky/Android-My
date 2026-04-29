@@ -101,11 +101,11 @@ class CommunityFragment : Fragment() {
         val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val now = Date()
         val mockPosts = listOf(
-            ForumPostAdapter.ForumPost(1, "管理员", formatTime(timeFormat, now, -9), "欢迎来到社区", "这是第一条社区帖子，欢迎大家交流讨论工具使用心得！", 5),
-            ForumPostAdapter.ForumPost(2, "小明", formatTime(timeFormat, now, -7), "计数器使用技巧", "长按+号可以快速增加，数据会自动保存不会丢失。", 3),
-            ForumPostAdapter.ForumPost(3, "用户张三", formatTime(timeFormat, now, -4), "新功能建议", "希望增加深色模式切换功能和更多实用工具。", 8),
-            ForumPostAdapter.ForumPost(4, "健身达人", formatTime(timeFormat, now, -3), "BMI计算器心得", "这个工具计算结果很准确，推荐大家使用！", 2),
-            ForumPostAdapter.ForumPost(5, "日常用户", formatTime(timeFormat, now, -1), "打卡签到", "大家今天用了哪个工具？我用了倒计时煮泡面！", 12)
+            ForumPostAdapter.ForumPost(1, getString(R.string.sample_author_admin), formatTime(timeFormat, now, -9), getString(R.string.sample_title_welcome), getString(R.string.sample_content_welcome), 5),
+            ForumPostAdapter.ForumPost(2, getString(R.string.sample_author_xiaoming), formatTime(timeFormat, now, -7), getString(R.string.sample_title_counter), getString(R.string.sample_content_counter), 3),
+            ForumPostAdapter.ForumPost(3, getString(R.string.sample_author_zhangsan), formatTime(timeFormat, now, -4), getString(R.string.sample_title_feature), getString(R.string.sample_content_feature), 8),
+            ForumPostAdapter.ForumPost(4, getString(R.string.sample_author_fitness), formatTime(timeFormat, now, -3), getString(R.string.sample_title_bmi), getString(R.string.sample_content_bmi), 2),
+            ForumPostAdapter.ForumPost(5, getString(R.string.sample_author_daily), formatTime(timeFormat, now, -1), getString(R.string.sample_title_checkin), getString(R.string.sample_content_checkin), 12)
         )
         posts.addAll(mockPosts)
         savePosts()
@@ -133,21 +133,21 @@ class CommunityFragment : Fragment() {
 
         AlertDialog.Builder(requireContext())
             .setView(dialogView)
-            .setPositiveButton("发布") { _, _ ->
+            .setPositiveButton(getString(R.string.publish_btn)) { _, _ ->
                 val title = etTitle.text.toString().trim()
                 val content = etContent.text.toString().trim()
 
                 if (title.isEmpty()) {
-                    Toast.makeText(requireContext(), "请输入标题", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.enter_post_title), Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
                 if (content.isEmpty()) {
-                    Toast.makeText(requireContext(), "请输入内容", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.enter_post_content), Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
 
                 val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
-                val author = prefs.getString("current_user", "匿名用户") ?: "匿名用户"
+                val author = prefs.getString("current_user", getString(R.string.anonymous_user)) ?: getString(R.string.anonymous_user)
                 val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                 val newId = (posts.maxOfOrNull { it.id } ?: 0) + 1
 
@@ -165,19 +165,19 @@ class CommunityFragment : Fragment() {
                 adapter.notifyItemInserted(0)
                 rvCommunityPosts.scrollToPosition(0)
                 savePosts()
-                Toast.makeText(requireContext(), "发布成功", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.publish_success), Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
     private fun showPostDetailDialog(position: Int) {
         val post = posts[position]
-        val message = "作者：${post.authorName}\n时间：${post.time}\n\n${post.content}"
+        val message = getString(R.string.post_detail_format, post.authorName, post.time, post.content)
         AlertDialog.Builder(requireContext())
             .setTitle(post.title)
             .setMessage(message)
-            .setPositiveButton("关闭", null)
+            .setPositiveButton(getString(R.string.close), null)
             .show()
     }
 }

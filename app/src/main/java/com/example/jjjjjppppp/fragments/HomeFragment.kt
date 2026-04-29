@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -109,8 +110,8 @@ class HomeFragment : Fragment() {
         announcements.clear()
         // 第一页为logo
         announcements.add(Announcement(
-            title = "欢迎使用工具箱",
-            description = "实用工具，简单生活",
+            title = getString(R.string.welcome_title),
+            description = getString(R.string.welcome_desc),
             imageRes = R.mipmap.ic_launcher,
             isLogoPage = true
         ))
@@ -177,7 +178,7 @@ class HomeFragment : Fragment() {
     private fun setupButtons(view: View) {
         // 设置按钮
         ibSettings.setOnClickListener {
-            showSettingsDrawer()
+            findNavController().navigate(R.id.action_homeFragment_to_settingsFragment)
         }
 
         // 新增公告按钮
@@ -191,103 +192,25 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun showSettingsDrawer() {
-        try {
-            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.drawer_settings, null)
-
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setView(dialogView)
-            builder.setCancelable(true)
-
-            val dialog = builder.create()
-            dialog.show()
-
-            dialog.window?.setLayout(
-                (resources.displayMetrics.widthPixels * 0.5).toInt(),
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            // 设置关闭按钮
-            val ivClose = dialogView.findViewById<ImageButton>(R.id.ivCloseSettings)
-            ivClose?.setOnClickListener {
-                dialog.dismiss()
-            }
-
-            // 设置功能按钮
-            setupSettingsOptions(dialogView)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Toast.makeText(requireContext(), "设置加载失败: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun setupSettingsOptions(dialogView: View) {
-        try {
-            // 检查更新
-            val llCheckUpdate = dialogView.findViewById<LinearLayout>(R.id.llCheckUpdate)
-            llCheckUpdate?.setOnClickListener {
-                Toast.makeText(requireContext(), "已是最新版本 v1.0.0", Toast.LENGTH_SHORT).show()
-            }
-
-            // 关于我们
-            val llAbout = dialogView.findViewById<LinearLayout>(R.id.llAbout)
-            llAbout?.setOnClickListener {
-                Toast.makeText(requireContext(), "工具箱 v1.0.0\n简单实用的工具集合", Toast.LENGTH_LONG).show()
-            }
-
-            // 意见反馈
-            val llFeedback = dialogView.findViewById<LinearLayout>(R.id.llFeedback)
-            llFeedback?.setOnClickListener {
-                Toast.makeText(requireContext(), "感谢您的反馈！", Toast.LENGTH_SHORT).show()
-            }
-
-            // 清除缓存
-            val llClearCache = dialogView.findViewById<LinearLayout>(R.id.llClearCache)
-            llClearCache?.setOnClickListener {
-                Toast.makeText(requireContext(), "缓存已清除", Toast.LENGTH_SHORT).show()
-            }
-
-            // 主题设置
-            val llTheme = dialogView.findViewById<LinearLayout>(R.id.llTheme)
-            llTheme?.setOnClickListener {
-                Toast.makeText(requireContext(), "主题功能开发中", Toast.LENGTH_SHORT).show()
-            }
-
-            // 语言设置
-            val llLanguage = dialogView.findViewById<LinearLayout>(R.id.llLanguage)
-            llLanguage?.setOnClickListener {
-                Toast.makeText(requireContext(), "语言功能开发中", Toast.LENGTH_SHORT).show()
-            }
-
-            // 隐私政策
-            val llPrivacy = dialogView.findViewById<LinearLayout>(R.id.llPrivacy)
-            llPrivacy?.setOnClickListener {
-                Toast.makeText(requireContext(), "隐私政策：保护用户隐私是我们的责任", Toast.LENGTH_LONG).show()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     private fun showAddAnnouncementDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_announcement, null)
         val etTitle = dialogView.findViewById<android.widget.EditText>(R.id.etAnnouncementTitle)
         val etDescription = dialogView.findViewById<android.widget.EditText>(R.id.etAnnouncementDescription)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("新增公告")
+            .setTitle(getString(R.string.add_announcement_title))
             .setView(dialogView)
-            .setPositiveButton("添加") { _, _ ->
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
                 val title = etTitle.text.toString().trim()
                 val description = etDescription.text.toString().trim()
 
                 if (title.isNotEmpty() && description.isNotEmpty()) {
                     addAnnouncement(title, description)
                 } else {
-                    Toast.makeText(requireContext(), "请填写完整信息", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.fill_complete_info), Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
@@ -301,27 +224,27 @@ class HomeFragment : Fragment() {
         bannerAdapter?.notifyDataSetChanged()
         saveAnnouncements()
         updateIndicators()
-        Toast.makeText(requireContext(), "公告已添加", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(R.string.announcement_added), Toast.LENGTH_SHORT).show()
     }
 
     private fun deleteCurrentAnnouncement() {
         if (currentPosition > 0 && currentPosition < announcements.size) {
             AlertDialog.Builder(requireContext())
-                .setTitle("删除公告")
-                .setMessage("确定要删除这条公告吗？")
-                .setPositiveButton("删除") { _, _ ->
+                .setTitle(getString(R.string.delete_announcement))
+                .setMessage(getString(R.string.delete_announcement_confirm))
+                .setPositiveButton(getString(R.string.delete)) { _, _ ->
                     announcements.removeAt(currentPosition)
                     currentPosition = 0
                     rvBanner.smoothScrollToPosition(0)
                     bannerAdapter?.notifyDataSetChanged()
                     saveAnnouncements()
                     updateIndicators()
-                    Toast.makeText(requireContext(), "公告已删除", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.announcement_deleted), Toast.LENGTH_SHORT).show()
                 }
-                .setNegativeButton("取消", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
         } else {
-            Toast.makeText(requireContext(), "无法删除Logo页面", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.cannot_delete_logo), Toast.LENGTH_SHORT).show()
         }
     }
 

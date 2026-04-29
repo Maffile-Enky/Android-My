@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="字数统计"
+        android:text="@string/tool_word_count"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/primary"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:hint="输入或粘贴文本..."
+        android:hint="@string/text_hint"
         android:textSize="14sp"
         android:gravity="top"
         android:padding="12dp"
@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="字符数"
+                android:text="@string/char_count"
                 android:textSize="12sp"
                 android:textColor="@color/hint_text" />
 
@@ -79,7 +79,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="中文字数"
+                android:text="@string/chinese_count"
                 android:textSize="12sp"
                 android:textColor="@color/hint_text" />
 
@@ -104,7 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="单词数"
+                android:text="@string/word_count_label"
                 android:textSize="12sp"
                 android:textColor="@color/hint_text" />
 
@@ -116,7 +116,7 @@
         android:id="@+id/btnClear"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="清空"
+        android:text="@string/clear"
         android:textColor="@color/white"
         android:backgroundTint="@color/reset_btn"
         app:cornerRadius="8dp"

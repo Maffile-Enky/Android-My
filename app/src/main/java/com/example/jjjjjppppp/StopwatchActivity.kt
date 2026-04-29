@@ -70,7 +70,7 @@ class StopwatchActivity : AppCompatActivity() {
             startTime = System.currentTimeMillis() - elapsedTime
             isRunning = true
             handler.post(runnable)
-            btnStart.text = "暂停"
+            btnStart.text = getString(R.string.pause)
             btnStart.backgroundTintList = ColorStateList.valueOf(getColor(R.color.negative_count))
         }
     }
@@ -79,14 +79,14 @@ class StopwatchActivity : AppCompatActivity() {
         if (isRunning) {
             isRunning = false
             handler.removeCallbacks(runnable)
-            btnStart.text = "开始"
+            btnStart.text = getString(R.string.start)
             btnStart.backgroundTintList = ColorStateList.valueOf(getColor(R.color.increase_btn))
         }
     }
 
     private fun recordLap() {
         lapCount++
-        val lapText = "第${lapCount}次: ${formatTime(elapsedTime)}"
+        val lapText = getString(R.string.lap_format, lapCount, formatTime(elapsedTime))
         tvLap.text = if (tvLap.text.isEmpty()) lapText else "$lapText\n${tvLap.text}"
     }
 

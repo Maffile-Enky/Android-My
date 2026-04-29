@@ -32,3 +32,16 @@ UI 优化
 校验用户名是否存在 → 校验密码 → 登录成功，状态持久化
 退出登录：清除当前用户状态，恢复登录表单
 数据通过 SharedPreferences 存储（user_accounts），跨 App 重启保持登录状态
+
+
+版本更新 (0.2.0)：
+
+app/build.gradle.kts:32 — versionName = "0.2.0"
+SettingsFragment.kt — Toast 文本改为 v0.2.0
+fragment_settings.xml — 检查更新和底部版本号改为 v0.2.0
+英语选项：
+
+ThemeManager.kt — 新增语言管理（LANG_ZH/LANG_EN），wrapContext() 通过 attachBaseContext 注入 locale
+SettingsFragment.kt — 语言行点击弹出 "简体中文 / English" 选择框，切换后 activity.recreate() 即时生效
+MainActivity.kt — 新增 attachBaseContext() 在启动时恢复已保存的语言
+values-en/strings.xml — 英文版字符串资源（底部导航、工具名等）

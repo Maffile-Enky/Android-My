@@ -24,7 +24,7 @@ class BmiCalculatorActivity : AppCompatActivity() {
 
             if (heightCm == null || weightKg == null || heightCm <= 0 || weightKg <= 0) {
                 tvBmiValue.text = "-"
-                tvBmiCategory.text = "请输入有效的身高体重"
+                tvBmiCategory.text = getString(R.string.enter_valid_height_weight)
                 tvBmiRange.text = ""
                 return@setOnClickListener
             }
@@ -35,16 +35,16 @@ class BmiCalculatorActivity : AppCompatActivity() {
 
             tvBmiValue.text = String.format("%.1f", bmi)
             tvBmiCategory.text = category
-            tvBmiRange.text = "正常范围: $range"
+            tvBmiRange.text = getString(R.string.normal_range, range)
         }
     }
 
     private fun getBmiCategory(bmi: Double): Pair<String, String> {
         return when {
-            bmi < 18.5 -> "偏瘦" to "18.5 - 24.9"
-            bmi < 24.9 -> "正常" to "18.5 - 24.9"
-            bmi < 29.9 -> "偏胖" to "18.5 - 24.9"
-            else -> "肥胖" to "18.5 - 24.9"
+            bmi < 18.5 -> getString(R.string.underweight) to "18.5 - 24.9"
+            bmi < 24.9 -> getString(R.string.normal) to "18.5 - 24.9"
+            bmi < 29.9 -> getString(R.string.overweight) to "18.5 - 24.9"
+            else -> getString(R.string.obese) to "18.5 - 24.9"
         }
     }
 }

@@ -10,7 +10,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="随机数生成"
+        android:text="@string/tool_random"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/primary"
@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="范围设置"
+                android:text="@string/range_settings"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/counter_text" />
@@ -64,7 +64,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="最小值"
+                    android:text="@string/min_value"
                     android:textSize="14sp"
                     android:textColor="@color/hint_text"
                     android:layout_gravity="center_vertical" />
@@ -82,7 +82,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="最大值"
+                    android:text="@string/max_value"
                     android:textSize="14sp"
                     android:textColor="@color/hint_text"
                     android:layout_gravity="center_vertical"
@@ -104,7 +104,7 @@
                 android:id="@+id/btnGenerate"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="生成随机数"
+                android:text="@string/generate_random"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/primary"
                 app:cornerRadius="8dp"
@@ -114,7 +114,7 @@
                 android:id="@+id/btnDice"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="掷骰子 (1-6)"
+                android:text="@string/roll_dice"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/accent"
                 app:cornerRadius="8dp"

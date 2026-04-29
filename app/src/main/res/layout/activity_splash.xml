@@ -36,7 +36,7 @@
         android:id="@+id/tvSlogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="欢迎使用"
+        android:text="@string/welcome_splash"
         android:textSize="16sp"
         android:textColor="@color/white_alpha"
         app:layout_constraintEnd_toEndOf="parent"

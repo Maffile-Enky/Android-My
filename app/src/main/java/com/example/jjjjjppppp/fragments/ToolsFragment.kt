@@ -46,61 +46,61 @@ class ToolsFragment : Fragment() {
         val tools = listOf(
             ToolInfo(
                 name = getString(R.string.tool_counter),
-                description = "简单实用的计数工具，支持数据保存",
+                description = getString(R.string.desc_counter),
                 icon = R.mipmap.ic_launcher,
                 activityClass = CounterActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_calculator),
-                description = "基础计算器，支持四则运算",
+                description = getString(R.string.desc_calculator),
                 icon = R.drawable.ic_calculator,
                 activityClass = CalculatorActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_stopwatch),
-                description = "精准秒表，支持计次功能",
+                description = getString(R.string.desc_stopwatch),
                 icon = R.drawable.ic_stopwatch,
                 activityClass = StopwatchActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_timer),
-                description = "倒计时工具，设置提醒",
+                description = getString(R.string.desc_timer),
                 icon = R.drawable.ic_timer,
                 activityClass = TimerActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_todo),
-                description = "待办事项管理，记录日常任务",
+                description = getString(R.string.desc_todo),
                 icon = R.drawable.ic_todo,
                 activityClass = TodoActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_random),
-                description = "生成指定范围的随机数，支持掷骰子",
+                description = getString(R.string.desc_random),
                 icon = R.drawable.ic_random,
                 activityClass = RandomNumberActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_converter),
-                description = "长度、重量、温度单位换算",
+                description = getString(R.string.desc_converter),
                 icon = R.drawable.ic_convert,
                 activityClass = UnitConverterActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_notes),
-                description = "随时记录想法和重要信息",
+                description = getString(R.string.desc_notes),
                 icon = R.drawable.ic_note,
                 activityClass = NotesActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_bmi),
-                description = "计算身体质量指数，评估体重状态",
+                description = getString(R.string.desc_bmi),
                 icon = R.drawable.ic_bmi,
                 activityClass = BmiCalculatorActivity::class.java
             ),
             ToolInfo(
                 name = getString(R.string.tool_word_count),
-                description = "统计文本的字符数、中文数和单词数",
+                description = getString(R.string.desc_word_count),
                 icon = R.drawable.ic_word_count,
                 activityClass = WordCounterActivity::class.java
             )

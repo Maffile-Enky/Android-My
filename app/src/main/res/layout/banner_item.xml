@@ -18,7 +18,7 @@
         android:layout_gravity="bottom"
         android:background="@drawable/banner_text_background"
         android:padding="12dp"
-        android:text="公告内容"
+        android:text="@string/banner_content_placeholder"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />

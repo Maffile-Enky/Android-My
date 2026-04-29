@@ -14,10 +14,10 @@ class UnitConverterActivity : AppCompatActivity() {
     private lateinit var etInput: EditText
     private lateinit var tvResult: TextView
 
-    private val categories = arrayOf("长度", "重量", "温度")
-    private val lengthUnits = arrayOf("米 → 厘米", "厘米 → 米", "米 → 千米", "千米 → 米", "英尺 → 米", "米 → 英尺")
-    private val weightUnits = arrayOf("千克 → 克", "克 → 千克", "千克 → 磅", "磅 → 千克")
-    private val tempUnits = arrayOf("摄氏度 → 华氏度", "华氏度 → 摄氏度")
+    private val categories by lazy { arrayOf(getString(R.string.category_length), getString(R.string.category_weight), getString(R.string.category_temperature)) }
+    private val lengthUnits by lazy { getString(R.string.length_options).split(",").toTypedArray() }
+    private val weightUnits by lazy { getString(R.string.weight_options).split(",").toTypedArray() }
+    private val tempUnits by lazy { getString(R.string.temperature_options).split(",").toTypedArray() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class UnitConverterActivity : AppCompatActivity() {
     private fun convert() {
         val input = etInput.text.toString().toDoubleOrNull()
         if (input == null) {
-            tvResult.text = "请输入有效数值"
+            tvResult.text = getString(R.string.enter_valid_value)
             return
         }
 
@@ -59,14 +59,20 @@ class UnitConverterActivity : AppCompatActivity() {
     }
 
     private fun convertLength(value: Double): String {
-        return "厘米: ${value * 100}\n千米: ${value / 1000}\n英尺: ${value * 3.28084}\n英寸: ${value * 39.3701}"
+        return "${getString(R.string.unit_cm)}: ${value * 100}\n" +
+                "${getString(R.string.unit_km)}: ${value / 1000}\n" +
+                "${getString(R.string.unit_ft)}: ${value * 3.28084}\n" +
+                "${getString(R.string.unit_in)}: ${value * 39.3701}"
     }
 
     private fun convertWeight(value: Double): String {
-        return "克: ${value * 1000}\n磅: ${value * 2.20462}\n盎司: ${value * 35.274}"
+        return "${getString(R.string.unit_g)}: ${value * 1000}\n" +
+                "${getString(R.string.unit_lb)}: ${value * 2.20462}\n" +
+                "${getString(R.string.unit_oz)}: ${value * 35.274}"
     }
 
     private fun convertTemperature(value: Double): String {
-        return "华氏度: ${value * 9 / 5 + 32}\n开尔文: ${value + 273.15}"
+        return "${getString(R.string.unit_fahrenheit)}: ${value * 9 / 5 + 32}\n" +
+                "${getString(R.string.unit_kelvin)}: ${value + 273.15}"
     }
 }

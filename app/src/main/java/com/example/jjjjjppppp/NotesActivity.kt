@@ -26,13 +26,13 @@ class NotesActivity : AppCompatActivity() {
                 putString("note_content", etContent.text.toString())
                 apply()
             }
-            Toast.makeText(this, "已保存", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show()
         }
 
         btnLoad.setOnClickListener {
             etTitle.setText(prefs.getString("note_title", ""))
             etContent.setText(prefs.getString("note_content", ""))
-            Toast.makeText(this, "已加载", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.loaded), Toast.LENGTH_SHORT).show()
         }
 
         btnClear.setOnClickListener {

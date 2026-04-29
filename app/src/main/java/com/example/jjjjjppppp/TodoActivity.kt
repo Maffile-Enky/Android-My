@@ -58,9 +58,9 @@ class TodoActivity : AppCompatActivity() {
     }
 
     private fun showTodoOptions(position: Int) {
-        val items = arrayOf("完成", "编辑", "删除")
+        val items = arrayOf(getString(R.string.complete), getString(R.string.edit), getString(R.string.delete))
         AlertDialog.Builder(this)
-            .setTitle("选择操作")
+            .setTitle(getString(R.string.select_action))
             .setItems(items) { _, which ->
                 when (which) {
                     0 -> completeTodo(position)
@@ -87,9 +87,9 @@ class TodoActivity : AppCompatActivity() {
         editText.setText(todoItems[position].removePrefix("✓ "))
 
         AlertDialog.Builder(this)
-            .setTitle("编辑待办事项")
+            .setTitle(getString(R.string.edit_todo))
             .setView(editText)
-            .setPositiveButton("确定") { _, _ ->
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 val newText = editText.text.toString().trim()
                 if (newText.isNotEmpty()) {
                     todoItems[position] = newText
@@ -97,7 +97,7 @@ class TodoActivity : AppCompatActivity() {
                     saveTodos()
                 }
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 

@@ -13,7 +13,16 @@
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/nav_mine" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/nav_settings" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.jjjjjppppp.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_tools"

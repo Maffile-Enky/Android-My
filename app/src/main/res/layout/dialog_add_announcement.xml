@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="公告标题"
+        android:text="@string/announcement_title_label"
         android:textSize="16sp"
         android:textColor="@color/counter_text"
         android:layout_marginBottom="8dp" />
@@ -17,7 +17,7 @@
         android:id="@+id/etAnnouncementTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="输入公告标题"
+        android:hint="@string/announcement_title_hint"
         android:padding="12dp"
         android:background="@drawable/display_background"
         android:layout_marginBottom="16dp" />
@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="公告内容"
+        android:text="@string/announcement_content_label"
         android:textSize="16sp"
         android:textColor="@color/counter_text"
         android:layout_marginBottom="8dp" />
@@ -34,7 +34,7 @@
         android:id="@+id/etAnnouncementDescription"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:hint="输入公告内容"
+        android:hint="@string/announcement_content_hint"
         android:padding="12dp"
         android:background="@drawable/display_background"
         android:gravity="top|start" />

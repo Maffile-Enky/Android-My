@@ -1,11 +1,13 @@
 package com.example.jjjjjppppp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.jjjjjppppp.databinding.ActivityMainBinding
 import com.example.jjjjjppppp.R
+import com.example.jjjjjppppp.utils.ThemeManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -13,8 +15,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationView: BottomNavigationView
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ThemeManager.wrapContext(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this))
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

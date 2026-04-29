@@ -98,17 +98,17 @@ class MineFragment : Fragment() {
     private fun showLoginSection() {
         layoutLoginSection.visibility = View.VISIBLE
         layoutProfileSection.visibility = View.GONE
-        tvLoginTitle.text = "用户登录"
-        tvLoginSubtitle.text = "欢迎回来，请登录您的账号"
+        tvLoginTitle.text = getString(R.string.login_title)
+        tvLoginSubtitle.text = getString(R.string.login_subtitle)
         cardLoginForm.visibility = View.VISIBLE
         btnLogin.visibility = View.VISIBLE
-        btnRegister.text = "注册新账号"
+        btnRegister.text = getString(R.string.register_new_account)
     }
 
     private fun showProfileSection() {
         layoutLoginSection.visibility = View.GONE
         layoutProfileSection.visibility = View.VISIBLE
-        tvWelcomeHeader.text = "已登录，欢迎回来，$currentUsername"
+        tvWelcomeHeader.text = getString(R.string.logged_in_welcome, currentUsername)
         loadProfile()
     }
 
@@ -118,7 +118,7 @@ class MineFragment : Fragment() {
             val password = etPassword.text.toString().trim()
 
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "请输入用户名和密码", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.enter_username_password), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -126,13 +126,13 @@ class MineFragment : Fragment() {
             val users = prefs.getStringSet("registered_users", emptySet()) ?: emptySet()
 
             if (!users.contains(username)) {
-                Toast.makeText(requireContext(), "用户不存在，请先注册", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val savedPassword = prefs.getString("pwd_$username", "")
             if (password != savedPassword) {
-                Toast.makeText(requireContext(), "密码错误", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.wrong_password), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -144,7 +144,7 @@ class MineFragment : Fragment() {
             isLoggedIn = true
             currentUsername = username
             showProfileSection()
-            Toast.makeText(requireContext(), "登录成功，欢迎 $username", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.login_success, username), Toast.LENGTH_SHORT).show()
         }
 
         btnRegister.setOnClickListener {
@@ -159,7 +159,7 @@ class MineFragment : Fragment() {
     private fun setupProfileListeners() {
         btnSaveProfile.setOnClickListener {
             saveProfile()
-            Toast.makeText(requireContext(), "个人信息已保存", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.profile_saved), Toast.LENGTH_SHORT).show()
         }
 
         btnLogout.setOnClickListener {
@@ -179,7 +179,7 @@ class MineFragment : Fragment() {
         showLoginSection()
         etUsername.text.clear()
         etPassword.text.clear()
-        Toast.makeText(requireContext(), "已退出登录", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(R.string.logged_out), Toast.LENGTH_SHORT).show()
     }
 
     private fun showRegisterDialog() {
@@ -190,21 +190,21 @@ class MineFragment : Fragment() {
 
         AlertDialog.Builder(requireContext())
             .setView(dialogView)
-            .setPositiveButton("注册") { _, _ ->
+            .setPositiveButton(getString(R.string.register_btn)) { _, _ ->
                 val username = etRegUsername.text.toString().trim()
                 val password = etRegPassword.text.toString().trim()
                 val confirmPassword = etRegConfirmPassword.text.toString().trim()
 
                 if (username.length < 3) {
-                    Toast.makeText(requireContext(), "用户名至少需要3个字符", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.username_too_short), Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
                 if (password.length < 4) {
-                    Toast.makeText(requireContext(), "密码至少需要4个字符", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.password_too_short), Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
                 if (password != confirmPassword) {
-                    Toast.makeText(requireContext(), "两次密码输入不一致", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.password_mismatch), Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
 
@@ -212,7 +212,7 @@ class MineFragment : Fragment() {
                 val users = prefs.getStringSet("registered_users", emptySet())?.toMutableSet() ?: mutableSetOf()
 
                 if (users.contains(username)) {
-                    Toast.makeText(requireContext(), "用户名已存在，请更换", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.username_exists), Toast.LENGTH_SHORT).show()
                     return@setPositiveButton
                 }
 
@@ -227,9 +227,9 @@ class MineFragment : Fragment() {
                 isLoggedIn = true
                 currentUsername = username
                 showProfileSection()
-                Toast.makeText(requireContext(), "注册成功，已自动登录", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.register_success), Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("取消", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
