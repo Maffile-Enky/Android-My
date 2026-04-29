@@ -35,6 +35,31 @@ object ChatRepository {
             .map { it.toChatMessage() }
     }
 
+    fun getConversations(user: String): List<com.toolbox.models.Conversation> = transaction {
+        val subquery = ChatMessagesTable
+            .select(ChatMessagesTable.id.max())
+            .where { (ChatMessagesTable.fromUser eq user) or (ChatMessagesTable.toUser eq user) }
+            .groupBy(
+                Case()
+                    .When(ChatMessagesTable.fromUser eq user, ChatMessagesTable.toUser)
+                    .Else(ChatMessagesTable.fromUser)
+            )
+
+        ChatMessagesTable.selectAll()
+            .where { ChatMessagesTable.id inSubQuery subquery }
+            .orderBy(ChatMessagesTable.id to SortOrder.DESC)
+            .map { row ->
+                val from = row[ChatMessagesTable.fromUser]
+                val to = row[ChatMessagesTable.toUser]
+                com.toolbox.models.Conversation(
+                    targetUser = if (from == user) to else from,
+                    lastMessage = row[ChatMessagesTable.content],
+                    lastTime = row[ChatMessagesTable.createdAt],
+                    isFromMe = from == user
+                )
+            }
+    }
+
     fun save(fromUser: String, toUser: String, content: String): ChatMessage = transaction {
         val now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         val id = ChatMessagesTable.insertAndGetId {

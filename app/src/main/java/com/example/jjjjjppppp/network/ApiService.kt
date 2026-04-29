@@ -1,6 +1,7 @@
 package com.example.jjjjjppppp.network
 
 import com.example.jjjjjppppp.network.dto.ChatListResponseDto
+import com.example.jjjjjppppp.network.dto.ConversationListResponseDto
 import com.example.jjjjjppppp.network.dto.ChatMessageDto
 import com.example.jjjjjppppp.network.dto.ChatRequestDto
 import com.example.jjjjjppppp.network.dto.PageResponseDto
@@ -40,4 +41,7 @@ interface ApiService {
 
     @POST("api/chat/send")
     suspend fun sendChatMessage(@Body request: ChatRequestDto): Response<ChatMessageDto>
+
+    @GET("api/chat/conversations")
+    suspend fun getConversations(@Query("user") user: String): Response<ConversationListResponseDto>
 }

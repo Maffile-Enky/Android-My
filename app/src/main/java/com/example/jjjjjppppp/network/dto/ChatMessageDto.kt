@@ -19,3 +19,14 @@ data class ChatRequestDto(
 data class ChatListResponseDto(
     @SerializedName("messages") val messages: List<ChatMessageDto>
 )
+
+data class ConversationDto(
+    @SerializedName("targetUser") val targetUser: String,
+    @SerializedName("lastMessage") val lastMessage: String,
+    @SerializedName("lastTime") val lastTime: String,
+    @SerializedName("isFromMe") val isFromMe: Boolean
+)
+
+data class ConversationListResponseDto(
+    @SerializedName("conversations") val conversations: List<ConversationDto>
+)

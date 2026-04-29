@@ -2,6 +2,7 @@ package com.toolbox.routes
 
 import com.toolbox.models.ChatRequest
 import com.toolbox.models.ChatListResponse
+import com.toolbox.models.ConversationListResponse
 import com.toolbox.services.ChatService
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -13,6 +14,16 @@ import io.ktor.websocket.*
 fun Route.chatRoutes(chatService: ChatService) {
 
     route("/api/chat") {
+
+        get("/conversations") {
+            val user = call.request.queryParameters["user"] ?: ""
+            if (user.isBlank()) {
+                call.respond(HttpStatusCode.BadRequest, "user required")
+                return@get
+            }
+            val conversations = chatService.getConversations(user)
+            call.respond(ConversationListResponse(conversations))
+        }
 
         get("/messages") {
             val user = call.request.queryParameters["user"] ?: ""

@@ -22,3 +22,16 @@ data class ChatRequest(
 data class ChatListResponse(
     val messages: List<ChatMessage>
 )
+
+@Serializable
+data class Conversation(
+    val targetUser: String,
+    val lastMessage: String,
+    val lastTime: String,
+    val isFromMe: Boolean
+)
+
+@Serializable
+data class ConversationListResponse(
+    val conversations: List<Conversation>
+)

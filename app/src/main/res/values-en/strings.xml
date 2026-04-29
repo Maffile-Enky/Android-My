@@ -47,8 +47,8 @@
     <string name="announcement_deleted">Announcement deleted</string>
     <string name="delete_announcement_confirm">Are you sure you want to delete this announcement?</string>
     <string name="cannot_delete_logo">Cannot delete logo page</string>
-    <string name="latest_version">Already the latest version v0.2.0</string>
-    <string name="about_info">Toolbox v0.2.0\nA collection of practical tools</string>
+    <string name="latest_version">Already the latest version v0.3.0</string>
+    <string name="about_info">Toolbox v0.3.0\nA collection of practical tools</string>
     <string name="thanks_feedback">Thank you for your feedback!</string>
     <string name="privacy_policy_text">Privacy Policy: Protecting user privacy is our responsibility</string>
     <string name="cache_cleared">Cache cleared</string>
@@ -70,8 +70,8 @@
     <string name="select_theme">Select Theme</string>
     <string name="select_language">Select Language</string>
     <string name="lang_chinese">简体中文</string>
-    <string name="version_text">Toolbox v0.2.0</string>
-    <string name="version_short">v0.2.0</string>
+    <string name="version_text">Toolbox v0.3.0</string>
+    <string name="version_short">v0.3.0</string>
 
     <!-- Tool Names -->
     <string name="toolbox_title">Toolbox</string>
@@ -216,6 +216,9 @@
     <string name="chat_send">Send</string>
     <string name="chat_title">Chat</string>
     <string name="cannot_chat_self">Cannot chat with yourself</string>
+    <string name="conversations_title">Messages</string>
+    <string name="conversations_empty">No messages yet</string>
+    <string name="msg_preview_self">You: %s</string>
     <string name="new_post_title">New Post</string>
     <string name="post_title_hint">Title</string>
     <string name="post_content_hint">Content</string>

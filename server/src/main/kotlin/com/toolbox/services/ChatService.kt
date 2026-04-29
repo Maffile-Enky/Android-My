@@ -17,6 +17,10 @@ class ChatService {
         return ChatRepository.getMessages(user, target)
     }
 
+    fun getConversations(user: String): List<com.toolbox.models.Conversation> {
+        return ChatRepository.getConversations(user)
+    }
+
     fun sendMessage(fromUser: String, toUser: String, content: String): ChatMessage {
         val msg = ChatRepository.save(fromUser, toUser, content)
         val json = Json.encodeToString(msg)

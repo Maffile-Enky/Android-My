@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -70,6 +71,11 @@ class CommunityFragment : Fragment() {
         swipeRefresh.setOnRefreshListener { viewModel.loadPosts() }
         btnRetry.setOnClickListener { viewModel.loadPosts() }
         fabNewPost.setOnClickListener { showNewPostDialog() }
+
+        val ibMessages = view.findViewById<ImageButton>(R.id.ibMessages)
+        ibMessages.setOnClickListener {
+            findNavController().navigate(R.id.nav_conversations)
+        }
 
         observeViewModel()
         viewModel.loadPosts()
