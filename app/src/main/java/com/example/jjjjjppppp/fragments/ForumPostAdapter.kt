@@ -9,22 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jjjjjppppp.R
+import com.example.jjjjjppppp.network.dto.PostDto
 
 class ForumPostAdapter(
-    private val posts: MutableList<ForumPost>,
+    private val posts: MutableList<PostDto>,
     private val onLikeClick: (Int) -> Unit,
-    private val onPostClick: (Int) -> Unit
+    private val onPostClick: (Int) -> Unit,
+    private val onAvatarClick: (Int) -> Unit
 ) : RecyclerView.Adapter<ForumPostAdapter.PostViewHolder>() {
 
-    data class ForumPost(
-        val id: Long,
-        val authorName: String,
-        val time: String,
-        val title: String,
-        val content: String,
-        var likeCount: Int,
-        var isLiked: Boolean = false
-    )
+    // Track liked post IDs locally
+    private val likedPostIds = mutableSetOf<Long>()
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val ivAvatar: ImageView = itemView.findViewById(R.id.ivPostAvatar)
@@ -34,21 +29,37 @@ class ForumPostAdapter(
         private val tvPostContent: TextView = itemView.findViewById(R.id.tvPostContent)
         private val btnLike: Button = itemView.findViewById(R.id.btnLike)
 
-        fun bind(post: ForumPost, position: Int) {
-            tvAuthorName.text = post.authorName
-            tvPostTime.text = post.time
+        fun bind(post: PostDto, position: Int) {
+            tvAuthorName.text = post.author
+            tvPostTime.text = post.createdAt
             tvPostTitle.text = post.title
             tvPostContent.text = post.content
             updateLikeButton(post)
 
-            btnLike.setOnClickListener { onLikeClick(position) }
+            ivAvatar.setOnClickListener { onAvatarClick(position) }
+            btnLike.setOnClickListener {
+                onLikeClick(position)
+                toggleLocalLike(post)
+            }
             itemView.setOnClickListener { onPostClick(position) }
         }
 
-        fun updateLikeButton(post: ForumPost) {
-            val symbol = if (post.isLiked) "♥" else "♡"
-            val color = if (post.isLiked) Color.parseColor("#F44336") else Color.parseColor("#999999")
-            btnLike.text = "$symbol ${post.likeCount}"
+        private fun toggleLocalLike(post: PostDto) {
+            if (likedPostIds.contains(post.id)) {
+                likedPostIds.remove(post.id)
+            } else {
+                likedPostIds.add(post.id)
+            }
+            updateLikeButton(post)
+        }
+
+        private fun updateLikeButton(post: PostDto) {
+            val isLiked = likedPostIds.contains(post.id)
+            // Adjust display count for local like toggle
+            val displayLikes = if (isLiked) post.likes + 1 else post.likes
+            val symbol = if (isLiked) "♥" else "♡"
+            val color = if (isLiked) Color.parseColor("#F44336") else Color.parseColor("#999999")
+            btnLike.text = "$symbol $displayLikes"
             btnLike.setTextColor(color)
         }
     }

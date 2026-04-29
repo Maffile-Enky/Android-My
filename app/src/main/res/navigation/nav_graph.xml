@@ -37,6 +37,12 @@
         tools:layout="@layout/fragment_community" />
 
     <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.example.jjjjjppppp.fragments.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
         android:id="@+id/nav_mine"
         android:name="com.example.jjjjjppppp.fragments.MineFragment"
         android:label="fragment_mine"

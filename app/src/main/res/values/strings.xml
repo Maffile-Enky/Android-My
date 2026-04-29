@@ -208,6 +208,14 @@
     <string name="profile_saved">个人信息已保存</string>
 
     <!-- ==================== 社区 ==================== -->
+    <string name="community_empty">暂无帖子，点击右下角发布第一条</string>
+    <string name="community_error">网络连接失败</string>
+    <string name="community_retry">重试</string>
+    <string name="community_new_post_fab">发布新帖子</string>
+    <string name="chat_input_hint">输入消息…</string>
+    <string name="chat_send">发送</string>
+    <string name="chat_title">聊天</string>
+    <string name="cannot_chat_self">不能与自己聊天</string>
     <string name="new_post_title">发布新帖子</string>
     <string name="post_title_hint">标题</string>
     <string name="post_content_hint">内容</string>

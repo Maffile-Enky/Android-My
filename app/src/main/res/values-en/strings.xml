@@ -208,6 +208,14 @@
     <string name="profile_saved">Profile saved</string>
 
     <!-- Community -->
+    <string name="community_empty">No posts yet. Tap + to create one</string>
+    <string name="community_error">Network connection failed</string>
+    <string name="community_retry">Retry</string>
+    <string name="community_new_post_fab">New Post</string>
+    <string name="chat_input_hint">Type a message…</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_title">Chat</string>
+    <string name="cannot_chat_self">Cannot chat with yourself</string>
     <string name="new_post_title">New Post</string>
     <string name="post_title_hint">Title</string>
     <string name="post_content_hint">Content</string>
