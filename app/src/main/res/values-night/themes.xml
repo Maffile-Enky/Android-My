@@ -1,9 +1,51 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- 基础夜间主题：清新绿 -->
     <style name="Base.Theme.Jjjjjppppp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- 夜间主题颜色 -->
-        <item name="colorPrimary">#BB86FC</item>
-        <item name="colorPrimaryDark">#9C64E8</item>
-        <item name="colorAccent">#03DAC5</item>
+        <item name="colorPrimary">@color/green_primary_dark_variant</item>
+        <item name="colorPrimaryDark">@color/green_primary_dark_dark_variant</item>
+        <item name="colorAccent">@color/green_accent_dark_variant</item>
+    </style>
+
+    <style name="Theme.Jjjjjppppp" parent="Base.Theme.Jjjjjppppp" />
+
+    <!-- 夜间：天空蓝 -->
+    <style name="Theme.Jjjjjppppp.Blue" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/blue_primary_dark_variant</item>
+        <item name="colorPrimaryDark">@color/blue_primary_dark_dark_variant</item>
+        <item name="colorAccent">@color/blue_accent_dark_variant</item>
+    </style>
+
+    <!-- 夜间：活力橙 -->
+    <style name="Theme.Jjjjjppppp.Orange" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/orange_primary_dark_variant</item>
+        <item name="colorPrimaryDark">@color/orange_primary_dark_dark_variant</item>
+        <item name="colorAccent">@color/orange_accent_dark_variant</item>
+    </style>
+
+    <!-- 夜间：优雅紫 -->
+    <style name="Theme.Jjjjjppppp.Purple" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_primary_dark_variant</item>
+        <item name="colorPrimaryDark">@color/purple_primary_dark_dark_variant</item>
+        <item name="colorAccent">@color/purple_accent_dark_variant</item>
+    </style>
+
+    <!-- 夜间：浪漫粉 -->
+    <style name="Theme.Jjjjjppppp.Pink" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/pink_primary_dark_variant</item>
+        <item name="colorPrimaryDark">@color/pink_primary_dark_dark_variant</item>
+        <item name="colorAccent">@color/pink_accent_dark_variant</item>
+    </style>
+
+    <!-- 夜间：深邃青 -->
+    <style name="Theme.Jjjjjppppp.Teal" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/teal_primary_dark_variant</item>
+        <item name="colorPrimaryDark">@color/teal_primary_dark_dark_variant</item>
+        <item name="colorAccent">@color/teal_accent_dark_variant</item>
+    </style>
+
+    <!-- 启动画面夜间主题 -->
+    <style name="SplashTheme" parent="Theme.Jjjjjppppp">
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

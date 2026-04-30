@@ -5,7 +5,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-class CounterActivity : AppCompatActivity() {
+class CounterActivity : BaseActivity() {
 
     private lateinit var tvCount: TextView
     private lateinit var btnIncrease: Button

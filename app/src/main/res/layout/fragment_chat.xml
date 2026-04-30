@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="@color/primary"
+        android:background="?attr/colorPrimary"
         android:padding="12dp"
         android:elevation="4dp">
 
@@ -94,7 +94,7 @@
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:src="@android:drawable/ic_menu_send"
-            android:tint="@color/primary"
+            android:tint="?attr/colorPrimary"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_marginStart="8dp"
             android:contentDescription="@string/chat_send" />

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jjjjjppppp.R
+import com.example.jjjjjppppp.utils.ThemeManager
 
 class HomeFragment : Fragment() {
 
@@ -255,7 +256,7 @@ class HomeFragment : Fragment() {
             val indicator = View(requireContext())
             val size = if (i == currentPosition) 10 else 8
             val backgroundColor = if (i == currentPosition) {
-                android.graphics.Color.parseColor("#6200EE")
+                ThemeManager.getColorThemePrimaryColor(requireContext())
             } else {
                 android.graphics.Color.parseColor("#CCCCCC")
             }

@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
-class TimerActivity : AppCompatActivity() {
+class TimerActivity : BaseActivity() {
 
     private lateinit var tvTime: TextView
     private lateinit var btnStart: Button

@@ -3,10 +3,70 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- 主题色 -->
-    <color name="primary">#6200EE</color>
-    <color name="primary_dark">#3700B3</color>
-    <color name="accent">#03DAC5</color>
+    <!-- 默认主题色（清新绿） -->
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388E3C</color>
+    <color name="accent">#8BC34A</color>
+
+    <!-- 主题色：清新绿（默认） -->
+    <color name="green_primary">#4CAF50</color>
+    <color name="green_primary_dark">#388E3C</color>
+    <color name="green_accent">#8BC34A</color>
+
+    <!-- 主题色：天空蓝 -->
+    <color name="blue_primary">#2196F3</color>
+    <color name="blue_primary_dark">#1976D2</color>
+    <color name="blue_accent">#03A9F4</color>
+
+    <!-- 主题色：活力橙 -->
+    <color name="orange_primary">#FF9800</color>
+    <color name="orange_primary_dark">#F57C00</color>
+    <color name="orange_accent">#FF5722</color>
+
+    <!-- 主题色：优雅紫 -->
+    <color name="purple_primary">#9C27B0</color>
+    <color name="purple_primary_dark">#7B1FA2</color>
+    <color name="purple_accent">#E040FB</color>
+
+    <!-- 主题色：浪漫粉 -->
+    <color name="pink_primary">#E91E63</color>
+    <color name="pink_primary_dark">#C2185B</color>
+    <color name="pink_accent">#FF4081</color>
+
+    <!-- 主题色：深邃青 -->
+    <color name="teal_primary">#009688</color>
+    <color name="teal_primary_dark">#00796B</color>
+    <color name="teal_accent">#00BCD4</color>
+
+    <!-- Dark variants - 绿色 -->
+    <color name="green_primary_dark_variant">#66BB6A</color>
+    <color name="green_primary_dark_dark_variant">#81C784</color>
+    <color name="green_accent_dark_variant">#A5D6A7</color>
+
+    <!-- Dark variants - 蓝色 -->
+    <color name="blue_primary_dark_variant">#42A5F5</color>
+    <color name="blue_primary_dark_dark_variant">#64B5F6</color>
+    <color name="blue_accent_dark_variant">#4FC3F7</color>
+
+    <!-- Dark variants - 橙色 -->
+    <color name="orange_primary_dark_variant">#FFA726</color>
+    <color name="orange_primary_dark_dark_variant">#FFB74D</color>
+    <color name="orange_accent_dark_variant">#FF8A65</color>
+
+    <!-- Dark variants - 紫色 -->
+    <color name="purple_primary_dark_variant">#AB47BC</color>
+    <color name="purple_primary_dark_dark_variant">#BA68C8</color>
+    <color name="purple_accent_dark_variant">#EA80FC</color>
+
+    <!-- Dark variants - 粉色 -->
+    <color name="pink_primary_dark_variant">#EC407A</color>
+    <color name="pink_primary_dark_dark_variant">#F06292</color>
+    <color name="pink_accent_dark_variant">#FF80AB</color>
+
+    <!-- Dark variants - 青色 -->
+    <color name="teal_primary_dark_variant">#26A69A</color>
+    <color name="teal_primary_dark_dark_variant">#4DB6AC</color>
+    <color name="teal_accent_dark_variant">#4DD0E1</color>
 
     <!-- 计数器文字颜色 -->
     <color name="counter_text">#333333</color>
@@ -22,9 +82,9 @@
     <color name="hint_text">#999999</color>
 
     <!-- 启动画面颜色 -->
-    <color name="splash_background">#6200EE</color>
+    <color name="splash_background">#4CAF50</color>
     <color name="white_alpha">#CCFFFFFF</color>
 
     <!-- 底部导航颜色 -->
-    <color name="bottom_nav_item_color">@color/primary</color>
+    <color name="bottom_nav_item_color">#4CAF50</color>
 </resources>

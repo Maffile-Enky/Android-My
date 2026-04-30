@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-class CalculatorActivity : AppCompatActivity() {
+class CalculatorActivity : BaseActivity() {
 
     private lateinit var tvDisplay: TextView
     private var currentNumber: StringBuilder = StringBuilder()

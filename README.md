@@ -101,3 +101,37 @@ API 验证 — curl 测试 REST 端点和 WebSocket
 数据库备份 — H2 文件备份 + MySQL 迁移路径
 故障排查表 — 常见问题速查
 最后附了快速命令速查卡，日常更新只需两行命令：本地打包 + scp 上传重启
+
+==================================
+
+修改总结
+默认 UI → 清新绿 (#4CAF50)
+colors.xml — 将默认主题色从紫色 #6200EE 改为绿色 #4CAF50，splash 背景色同步更新
+6 套内置主题色系
+主题	主色
+清新绿	#4CAF50
+天空蓝	#2196F3
+活力橙	#FF9800
+优雅紫	#9C27B0
+浪漫粉	#E91E63
+深邃青	#009688
+每套主题均有对应的暗色模式变体（在 values-night/themes.xml 中定义）。
+
+核心架构改造
+ThemeManager.kt — 新增 applyColorTheme() / getColorThemeStyle() / getColorThemeName() 等方法，管理主题色系的选择与样式资源映射
+
+BaseActivity.kt（新建）— 所有 Activity 的统一基类，在 onCreate 前自动应用选中的主题色系和日夜间模式，同时处理语言环境包装
+
+所有 11 个 Activity — 改为继承 BaseActivity，移除重复的 attachBaseContext 和 applyTheme 代码
+
+全局布局/矢量图 — 将所有 @color/primary、@color/accent、@color/bottom_nav_item_color 引用替换为 ?attr/colorPrimary / ?attr/colorAccent，确保跟随主题动态变化
+
+设置页面改造
+SettingsFragment.kt 中的"主题设置"拆分为两个入口：
+
+主题色系 — 弹出圆点色板对话框，6 种配色一目了然，点击即时切换
+深色模式 — 原来的浅色/深色/跟随系统选择
+注意事项
+切换主题色系会触发 activity.recreate() 重建当前页面以应用新主题
+SplashActivity 保持独立主题（不参与动态切换，仅展示 3 秒）
+旧版紫色 UI 已完全替换为清新绿默认配色

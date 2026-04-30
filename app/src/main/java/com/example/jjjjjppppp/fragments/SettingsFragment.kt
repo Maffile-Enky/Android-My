@@ -1,9 +1,15 @@
 package com.example.jjjjjppppp.fragments
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -15,6 +21,8 @@ import com.example.jjjjjppppp.utils.ThemeManager
 class SettingsFragment : Fragment() {
 
     private lateinit var tvThemeValue: TextView
+    private lateinit var tvColorThemeValue: TextView
+    private lateinit var vColorPreview: View
     private lateinit var tvLanguageValue: TextView
 
     override fun onCreateView(
@@ -34,11 +42,14 @@ class SettingsFragment : Fragment() {
         }
 
         tvThemeValue = view.findViewById(R.id.tvThemeValue)
+        tvColorThemeValue = view.findViewById(R.id.tvColorThemeValue)
+        vColorPreview = view.findViewById(R.id.vColorPreview)
         tvLanguageValue = view.findViewById(R.id.tvLanguageValue)
-        updateThemeDisplay()
-        updateLanguageDisplay()
 
-        view.findViewById<View>(R.id.llTheme).setOnClickListener { showThemeDialog() }
+        updateAllDisplays()
+
+        view.findViewById<View>(R.id.llColorTheme).setOnClickListener { showColorThemeDialog() }
+        view.findViewById<View>(R.id.llTheme).setOnClickListener { showThemeModeDialog() }
         view.findViewById<View>(R.id.llLanguage).setOnClickListener { showLanguageDialog() }
         view.findViewById<View>(R.id.llClearCache).setOnClickListener {
             Toast.makeText(requireContext(), getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show()
@@ -57,16 +68,123 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun showThemeDialog() {
-        val currentMode = ThemeManager.getCurrentTheme(requireContext())
+    private fun showColorThemeDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(createColorThemePickerView(dialog))
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.show()
+    }
+
+    private fun createColorThemePickerView(dialog: Dialog): View {
+        val context = requireContext()
+        val currentTheme = ThemeManager.getCurrentColorTheme(context)
+        val themeNames = arrayOf(
+            R.string.theme_green, R.string.theme_blue, R.string.theme_orange,
+            R.string.theme_purple, R.string.theme_pink, R.string.theme_teal
+        )
+
+        val root = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(48, 48, 48, 32)
+        }
+
+        val title = TextView(context).apply {
+            text = getString(R.string.select_color_theme)
+            textSize = 20f
+            setTextColor(Color.BLACK)
+            gravity = Gravity.CENTER
+            setPadding(0, 0, 0, 36)
+        }
+        root.addView(title)
+
+        val gridLayout = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+
+        val rows = listOf(
+            intArrayOf(ThemeManager.THEME_GREEN, ThemeManager.THEME_BLUE, ThemeManager.THEME_ORANGE),
+            intArrayOf(ThemeManager.THEME_PURPLE, ThemeManager.THEME_PINK, ThemeManager.THEME_TEAL)
+        )
+
+        for (rowThemes in rows) {
+            val row = LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER
+                setPadding(0, 0, 0, 24)
+            }
+
+            for (themeIndex in rowThemes) {
+                val item = LinearLayout(context).apply {
+                    orientation = LinearLayout.VERTICAL
+                    gravity = Gravity.CENTER
+                    layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                }
+
+                val color = ThemeManager.getThemePrimaryColorFor(themeIndex)
+                val circle = View(context).apply {
+                    layoutParams = LinearLayout.LayoutParams(56, 56).apply {
+                        bottomMargin = 10
+                    }
+                    val bg = GradientDrawable().apply {
+                        shape = GradientDrawable.OVAL
+                        setColor(color)
+                        if (themeIndex == currentTheme) {
+                            setStroke(4, Color.DKGRAY)
+                        }
+                    }
+                    background = bg
+                }
+
+                val label = TextView(context).apply {
+                    text = getString(themeNames[themeIndex])
+                    textSize = 13f
+                    setTextColor(
+                        if (themeIndex == currentTheme) Color.BLACK
+                        else Color.GRAY
+                    )
+                    gravity = Gravity.CENTER
+                }
+
+                item.addView(circle)
+                item.addView(label)
+                item.setOnClickListener {
+                    ThemeManager.applyColorTheme(context, themeIndex)
+                    requireActivity().recreate()
+                }
+                row.addView(item)
+            }
+            gridLayout.addView(row)
+        }
+        root.addView(gridLayout)
+
+        val cancelBtn = TextView(context).apply {
+            text = getString(R.string.cancel)
+            textSize = 15f
+            setTextColor(Color.GRAY)
+            gravity = Gravity.CENTER
+            setPadding(0, 16, 0, 0)
+            setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+        root.addView(cancelBtn)
+
+        return root
+    }
+
+    private fun showThemeModeDialog() {
+        val currentMode = ThemeManager.getCurrentThemeMode(requireContext())
         val items = arrayOf(getString(R.string.theme_light), getString(R.string.theme_dark), getString(R.string.theme_system))
-        val checkedItem = currentMode
 
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.select_theme))
-            .setSingleChoiceItems(items, checkedItem) { dialog, which ->
-                ThemeManager.applyTheme(requireContext(), which)
-                updateThemeDisplay()
+            .setSingleChoiceItems(items, currentMode) { dialog, which ->
+                ThemeManager.applyThemeMode(requireContext(), which)
+                updateAllDisplays()
                 dialog.dismiss()
             }
             .setNegativeButton(getString(R.string.cancel), null)
@@ -83,7 +201,7 @@ class SettingsFragment : Fragment() {
             .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                 val langCode = if (which == 0) ThemeManager.LANG_ZH else ThemeManager.LANG_EN
                 ThemeManager.applyLanguage(requireContext(), langCode)
-                updateLanguageDisplay()
+                updateAllDisplays()
                 dialog.dismiss()
                 requireActivity().recreate()
             }
@@ -91,11 +209,20 @@ class SettingsFragment : Fragment() {
             .show()
     }
 
-    private fun updateThemeDisplay() {
-        tvThemeValue.text = ThemeManager.getThemeDisplayName(requireContext())
-    }
-
-    private fun updateLanguageDisplay() {
+    private fun updateAllDisplays() {
+        tvThemeValue.text = ThemeManager.getThemeModeDisplayName(requireContext())
+        tvColorThemeValue.text = ThemeManager.getColorThemeName(requireContext())
         tvLanguageValue.text = ThemeManager.getLanguageDisplayName(requireContext())
+
+        val colorCircle = vColorPreview.background as? GradientDrawable
+        if (colorCircle == null) {
+            val circle = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(ThemeManager.getColorThemePrimaryColor(requireContext()))
+            }
+            vColorPreview.background = circle
+        } else {
+            colorCircle.setColor(ThemeManager.getColorThemePrimaryColor(requireContext()))
+        }
     }
 }

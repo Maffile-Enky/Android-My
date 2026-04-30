@@ -11,7 +11,7 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/primary"
+        android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -86,7 +86,7 @@
                 android:text="@string/welcome_title"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="@color/primary" />
+                android:textColor="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/tvDescription"
@@ -123,7 +123,7 @@
             android:textSize="15sp"
             android:textColor="@color/white"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="8dp" />
 
         <Button

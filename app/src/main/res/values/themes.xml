@@ -1,13 +1,47 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- 基础主题：清新绿（默认） -->
     <style name="Base.Theme.Jjjjjppppp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- 主题颜色 -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/green_primary</item>
+        <item name="colorPrimaryDark">@color/green_primary_dark</item>
+        <item name="colorAccent">@color/green_accent</item>
     </style>
 
     <style name="Theme.Jjjjjppppp" parent="Base.Theme.Jjjjjppppp" />
+
+    <!-- 天空蓝 -->
+    <style name="Theme.Jjjjjppppp.Blue" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/blue_primary</item>
+        <item name="colorPrimaryDark">@color/blue_primary_dark</item>
+        <item name="colorAccent">@color/blue_accent</item>
+    </style>
+
+    <!-- 活力橙 -->
+    <style name="Theme.Jjjjjppppp.Orange" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/orange_primary</item>
+        <item name="colorPrimaryDark">@color/orange_primary_dark</item>
+        <item name="colorAccent">@color/orange_accent</item>
+    </style>
+
+    <!-- 优雅紫 -->
+    <style name="Theme.Jjjjjppppp.Purple" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_primary</item>
+        <item name="colorPrimaryDark">@color/purple_primary_dark</item>
+        <item name="colorAccent">@color/purple_accent</item>
+    </style>
+
+    <!-- 浪漫粉 -->
+    <style name="Theme.Jjjjjppppp.Pink" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/pink_primary</item>
+        <item name="colorPrimaryDark">@color/pink_primary_dark</item>
+        <item name="colorAccent">@color/pink_accent</item>
+    </style>
+
+    <!-- 深邃青 -->
+    <style name="Theme.Jjjjjppppp.Teal" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/teal_primary</item>
+        <item name="colorPrimaryDark">@color/teal_primary_dark</item>
+        <item name="colorAccent">@color/teal_accent</item>
+    </style>
 
     <!-- 启动画面主题 -->
     <style name="SplashTheme" parent="Theme.Jjjjjppppp">

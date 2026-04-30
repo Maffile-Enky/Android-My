@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-class StopwatchActivity : AppCompatActivity() {
+class StopwatchActivity : BaseActivity() {
 
     private lateinit var tvTime: TextView
     private lateinit var tvLap: TextView

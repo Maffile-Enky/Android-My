@@ -10,7 +10,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-class UnitConverterActivity : AppCompatActivity() {
+class UnitConverterActivity : BaseActivity() {
     private lateinit var etInput: EditText
     private lateinit var tvResult: TextView
 

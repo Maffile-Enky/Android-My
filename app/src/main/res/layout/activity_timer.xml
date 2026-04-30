@@ -15,7 +15,7 @@
         android:text="@string/tool_timer"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/primary"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -38,7 +38,7 @@
             android:text="01:00"
             android:textSize="48sp"
             android:textStyle="bold"
-            android:textColor="@color/primary"
+            android:textColor="?attr/colorPrimary"
             android:gravity="center"
             android:fontFamily="monospace" />
 

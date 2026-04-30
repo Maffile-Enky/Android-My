@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
-class TodoActivity : AppCompatActivity() {
+class TodoActivity : BaseActivity() {
 
     private lateinit var etTodo: EditText
     private lateinit var btnAdd: Button
