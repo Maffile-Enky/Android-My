@@ -1,6 +1,7 @@
 package com.toolbox.plugins
 
 import com.toolbox.repository.ChatRepository
+import com.toolbox.repository.HomeRepository
 import com.toolbox.repository.PostRepository
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
@@ -12,4 +13,5 @@ fun Application.configureDatabase() {
     )
     PostRepository.initTable()
     ChatRepository.initTable()
+    HomeRepository.initTable()
 }

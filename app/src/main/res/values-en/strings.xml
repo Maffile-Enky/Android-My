@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Toolbox</string>
-    <string name="app_title">Simple Counter</string>
+    <string name="app_name">雨宫莲</string>
+    <string name="app_title">雨宫莲</string>
 
     <!-- Common -->
     <string name="ok">OK</string>
@@ -33,7 +33,7 @@
     <string name="nav_mine">Mine</string>
 
     <!-- Home -->
-    <string name="welcome_title">Welcome to Toolbox</string>
+    <string name="welcome_title">Welcome to 雨宫莲</string>
     <string name="welcome_desc">Practical tools, simple life</string>
     <string name="add_announcement">Add Announcement</string>
     <string name="delete_announcement">Delete Announcement</string>
@@ -47,8 +47,8 @@
     <string name="announcement_deleted">Announcement deleted</string>
     <string name="delete_announcement_confirm">Are you sure you want to delete this announcement?</string>
     <string name="cannot_delete_logo">Cannot delete logo page</string>
-    <string name="latest_version">Already the latest version v0.3.0</string>
-    <string name="about_info">Toolbox v0.3.0\nA collection of practical tools</string>
+    <string name="latest_version">Already the latest version v1.0.0</string>
+    <string name="about_info">雨宫莲 v1.0.0\nA collection of practical tools</string>
     <string name="thanks_feedback">Thank you for your feedback!</string>
     <string name="privacy_policy_text">Privacy Policy: Protecting user privacy is our responsibility</string>
     <string name="cache_cleared">Cache cleared</string>
@@ -57,6 +57,7 @@
     <string name="appearance_section">Appearance</string>
     <string name="general_section">General</string>
     <string name="about_section">About</string>
+    <string name="theme_color">Theme Color</string>
     <string name="theme_settings">Theme</string>
     <string name="language_settings">Language</string>
     <string name="check_update">Check for Updates</string>
@@ -68,13 +69,20 @@
     <string name="theme_dark">Dark</string>
     <string name="theme_system">Follow System</string>
     <string name="select_theme">Select Theme</string>
+    <string name="select_color_theme">Select Color Theme</string>
     <string name="select_language">Select Language</string>
     <string name="lang_chinese">简体中文</string>
-    <string name="version_text">Toolbox v0.3.0</string>
-    <string name="version_short">v0.3.0</string>
+    <string name="theme_green">Fresh Green</string>
+    <string name="theme_blue">Sky Blue</string>
+    <string name="theme_orange">Vibrant Orange</string>
+    <string name="theme_purple">Elegant Purple</string>
+    <string name="theme_pink">Romantic Pink</string>
+    <string name="theme_teal">Deep Teal</string>
+    <string name="version_text">雨宫莲 v1.0.0</string>
+    <string name="version_short">v1.0.0</string>
 
     <!-- Tool Names -->
-    <string name="toolbox_title">Toolbox</string>
+    <string name="toolbox_title">雨宫莲</string>
     <string name="tool_counter">Counter</string>
     <string name="tool_calculator">Calculator</string>
     <string name="tool_stopwatch">Stopwatch</string>
@@ -192,7 +200,34 @@
     <string name="username_exists">Username already exists, please choose another</string>
     <string name="register_success">Registration successful, automatically logged in</string>
 
-    <!-- Profile -->
+    <!-- Profile (New) -->
+    <string name="section_account_info">Account Info</string>
+    <string name="section_app_settings">App Settings</string>
+    <string name="section_data">Data Management</string>
+    <string name="label_nickname">Nickname</string>
+    <string name="label_gender">Gender</string>
+    <string name="label_birthday">Birthday</string>
+    <string name="label_phone">Phone</string>
+    <string name="label_email">Email</string>
+    <string name="label_address">Address</string>
+    <string name="label_bio">Bio</string>
+    <string name="stat_favorites">Favorites</string>
+    <string name="stat_following">Following</string>
+    <string name="stat_followers">Followers</string>
+    <string name="stat_posts">Posts</string>
+    <string name="member_regular">Regular User</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="gender_unspecified">Unspecified</string>
+    <string name="select_birthday">Select Birthday</string>
+    <string name="saved_nickname">Nickname updated</string>
+    <string name="saved_gender">Gender updated</string>
+    <string name="saved_birthday">Birthday updated</string>
+    <string name="saved_phone">Phone updated</string>
+    <string name="saved_email">Email updated</string>
+    <string name="saved_address">Address updated</string>
+    <string name="saved_bio">Bio updated</string>
+
+    <!-- Profile (Original) -->
     <string name="profile_center">Profile</string>
     <string name="change_avatar">Tap to change avatar</string>
     <string name="nickname_hint">Nickname</string>

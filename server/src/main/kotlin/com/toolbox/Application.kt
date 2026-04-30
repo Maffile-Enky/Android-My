@@ -3,6 +3,7 @@ package com.toolbox
 import com.toolbox.plugins.*
 import com.toolbox.routes.*
 import com.toolbox.services.ChatService
+import com.toolbox.services.HomeService
 import com.toolbox.services.PostService
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -21,10 +22,12 @@ fun Application.module() {
 
     val postService = PostService()
     val chatService = ChatService()
+    val homeService = HomeService()
 
     routing {
         postRoutes(postService)
         webSocketRoutes(postService)
         chatRoutes(chatService)
+        homeRoutes(homeService)
     }
 }

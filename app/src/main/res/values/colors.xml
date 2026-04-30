@@ -3,10 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- 默认主题色（清新绿） -->
-    <color name="primary">#4CAF50</color>
-    <color name="primary_dark">#388E3C</color>
-    <color name="accent">#8BC34A</color>
+    <!-- 默认主题色（天空蓝） -->
+    <color name="primary">#2196F3</color>
+    <color name="primary_dark">#1976D2</color>
+    <color name="accent">#03A9F4</color>
 
     <!-- 主题色：清新绿（默认） -->
     <color name="green_primary">#4CAF50</color>
@@ -82,9 +82,9 @@
     <color name="hint_text">#999999</color>
 
     <!-- 启动画面颜色 -->
-    <color name="splash_background">#4CAF50</color>
+    <color name="splash_background">#2196F3</color>
     <color name="white_alpha">#CCFFFFFF</color>
 
     <!-- 底部导航颜色 -->
-    <color name="bottom_nav_item_color">#4CAF50</color>
+    <color name="bottom_nav_item_color">#2196F3</color>
 </resources>

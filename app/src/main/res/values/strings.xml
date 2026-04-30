@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">工具箱</string>
-    <string name="app_title">简单计数器</string>
+    <string name="app_name">雨宫莲</string>
+    <string name="app_title">雨宫莲</string>
 
     <!-- ==================== 通用 ==================== -->
     <string name="ok">确定</string>
@@ -33,7 +33,7 @@
     <string name="nav_mine">我的</string>
 
     <!-- ==================== 主页 ==================== -->
-    <string name="welcome_title">欢迎使用工具箱</string>
+    <string name="welcome_title">欢迎使用雨宫莲</string>
     <string name="welcome_desc">实用工具，简单生活</string>
     <string name="add_announcement">新增公告</string>
     <string name="delete_announcement">删除公告</string>
@@ -47,8 +47,8 @@
     <string name="announcement_deleted">公告已删除</string>
     <string name="delete_announcement_confirm">确定要删除这条公告吗？</string>
     <string name="cannot_delete_logo">无法删除Logo页面</string>
-    <string name="latest_version">已是最新版本 v0.3.0</string>
-    <string name="about_info">工具箱 v0.3.0\n简单实用的工具集合</string>
+    <string name="latest_version">已是最新版本 v1.0.0</string>
+    <string name="about_info">雨宫莲 v1.0.0\n简单实用的工具集合</string>
     <string name="thanks_feedback">感谢您的反馈！</string>
     <string name="privacy_policy_text">隐私政策：保护用户隐私是我们的责任</string>
     <string name="cache_cleared">缓存已清除</string>
@@ -80,11 +80,11 @@
     <string name="theme_pink">浪漫粉</string>
     <string name="theme_teal">深邃青</string>
     <string name="lang_chinese">简体中文</string>
-    <string name="version_text">工具箱 v0.3.0</string>
-    <string name="version_short">v0.3.0</string>
+    <string name="version_text">雨宫莲 v1.0.0</string>
+    <string name="version_short">v1.0.0</string>
 
     <!-- ==================== 工具名称 ==================== -->
-    <string name="toolbox_title">工具箱</string>
+    <string name="toolbox_title">雨宫莲</string>
     <string name="tool_counter">计数器</string>
     <string name="tool_calculator">计算器</string>
     <string name="tool_stopwatch">秒表</string>
@@ -202,7 +202,34 @@
     <string name="username_exists">用户名已存在，请更换</string>
     <string name="register_success">注册成功，已自动登录</string>
 
-    <!-- ==================== 个人中心/资料 ==================== -->
+    <!-- ==================== 个人中心/我的 (New) ==================== -->
+    <string name="section_account_info">账户信息</string>
+    <string name="section_app_settings">应用设置</string>
+    <string name="section_data">数据管理</string>
+    <string name="label_nickname">昵称</string>
+    <string name="label_gender">性别</string>
+    <string name="label_birthday">生日</string>
+    <string name="label_phone">手机号</string>
+    <string name="label_email">邮箱</string>
+    <string name="label_address">地址</string>
+    <string name="label_bio">个性签名</string>
+    <string name="stat_favorites">收藏</string>
+    <string name="stat_following">关注</string>
+    <string name="stat_followers">粉丝</string>
+    <string name="stat_posts">动态</string>
+    <string name="member_regular">普通用户</string>
+    <string name="select_gender">选择性别</string>
+    <string name="gender_unspecified">未设置</string>
+    <string name="select_birthday">选择生日</string>
+    <string name="saved_nickname">昵称已更新</string>
+    <string name="saved_gender">性别已更新</string>
+    <string name="saved_birthday">生日已更新</string>
+    <string name="saved_phone">手机号已更新</string>
+    <string name="saved_email">邮箱已更新</string>
+    <string name="saved_address">地址已更新</string>
+    <string name="saved_bio">签名已更新</string>
+
+    <!-- ==================== 个人中心/资料 (Original) ==================== -->
     <string name="profile_center">个人中心</string>
     <string name="change_avatar">点击更换头像</string>
     <string name="nickname_hint">昵称</string>

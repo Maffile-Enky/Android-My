@@ -18,8 +18,8 @@ object ThemeManager {
     const val MODE_SYSTEM = 2
 
     // 主题色系
-    const val THEME_GREEN = 0
-    const val THEME_BLUE = 1
+    const val THEME_BLUE = 0
+    const val THEME_GREEN = 1
     const val THEME_ORANGE = 2
     const val THEME_PURPLE = 3
     const val THEME_PINK = 4
@@ -29,8 +29,8 @@ object ThemeManager {
     const val LANG_EN = "en"
 
     private val THEME_STYLE_IDS = intArrayOf(
-        R.style.Theme_Jjjjjppppp,        // 清新绿
         R.style.Theme_Jjjjjppppp_Blue,   // 天空蓝
+        R.style.Theme_Jjjjjppppp,        // 清新绿
         R.style.Theme_Jjjjjppppp_Orange, // 活力橙
         R.style.Theme_Jjjjjppppp_Purple, // 优雅紫
         R.style.Theme_Jjjjjppppp_Pink,   // 浪漫粉
@@ -38,8 +38,8 @@ object ThemeManager {
     )
 
     private val THEME_NAME_KEYS = intArrayOf(
-        R.string.theme_green,
         R.string.theme_blue,
+        R.string.theme_green,
         R.string.theme_orange,
         R.string.theme_purple,
         R.string.theme_pink,
@@ -47,8 +47,8 @@ object ThemeManager {
     )
 
     private val THEME_PRIMARY_COLORS = intArrayOf(
-        0xFF4CAF50.toInt(),
         0xFF2196F3.toInt(),
+        0xFF4CAF50.toInt(),
         0xFF9800.toInt(),
         0xFF9C27B0.toInt(),
         0xFFE91E63.toInt(),
@@ -96,31 +96,31 @@ object ThemeManager {
 
     fun getCurrentColorTheme(context: Context): Int {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getInt(KEY_COLOR_THEME, THEME_GREEN)
+            .getInt(KEY_COLOR_THEME, THEME_BLUE)
     }
 
     fun getColorThemeStyle(context: Context): Int {
         val index = getCurrentColorTheme(context)
-        return THEME_STYLE_IDS.getOrElse(index) { R.style.Theme_Jjjjjppppp }
+        return THEME_STYLE_IDS.getOrElse(index) { R.style.Theme_Jjjjjppppp_Blue }
     }
 
     fun getColorThemeName(context: Context): String {
         val index = getCurrentColorTheme(context)
-        val key = THEME_NAME_KEYS.getOrElse(index) { R.string.theme_green }
+        val key = THEME_NAME_KEYS.getOrElse(index) { R.string.theme_blue }
         return context.getString(key)
     }
 
     fun getColorThemePrimaryColor(context: Context): Int {
         val index = getCurrentColorTheme(context)
-        return THEME_PRIMARY_COLORS.getOrElse(index) { 0xFF4CAF50.toInt() }
+        return THEME_PRIMARY_COLORS.getOrElse(index) { 0xFF2196F3.toInt() }
     }
 
     fun getThemePrimaryColorFor(index: Int): Int {
-        return THEME_PRIMARY_COLORS.getOrElse(index) { 0xFF4CAF50.toInt() }
+        return THEME_PRIMARY_COLORS.getOrElse(index) { 0xFF2196F3.toInt() }
     }
 
     fun getThemeNameKeyFor(index: Int): Int {
-        return THEME_NAME_KEYS.getOrElse(index) { R.string.theme_green }
+        return THEME_NAME_KEYS.getOrElse(index) { R.string.theme_blue }
     }
 
     // ==================== Language ====================

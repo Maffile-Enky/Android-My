@@ -135,3 +135,179 @@ SettingsFragment.kt 中的"主题设置"拆分为两个入口：
 切换主题色系会触发 activity.recreate() 重建当前页面以应用新主题
 SplashActivity 保持独立主题（不参与动态切换，仅展示 3 秒）
 旧版紫色 UI 已完全替换为清新绿默认配色
+
+=========================================
+所有修改已完成。以下是完整的总结和使用说明。
+
+修改总结
+主界面布局重新设计
+原来的主界面只有 banner 轮播 + 欢迎卡片 + 两个按钮，现在改为服务端驱动的四大板块：
+
+
+┌──────────────────────────────────┐
+│          工具箱          [⚙️]    │  ← Top Bar
+├──────────────────────────────────┤
+│   Banner 轮播（来自服务器）       │  ← 板块1：公告/Banner
+│         ○ ○ ● ○                 │
+├──────────────────────────────────┤
+│  常用工具                        │  ← 板块2：快捷工具网格
+│  ┌────┐┌────┐┌────┐┌────┐     │
+│  │计数││BMI ││秒表││便签│     │     服务器控制显示哪些工具
+│  └────┘└────┘└────┘└────┘     │
+├──────────────────────────────────┤
+│  精选推荐                        │  ← 板块3：精选推荐卡片
+│  ┌ 加入社区讨论 ─────────┐      │     可点击跳转到社区/工具页
+│  │ 分享你的工具使用心得    │      │
+│  └───────────────────────┘      │
+├──────────────────────────────────┤
+│  最新通知                        │  ← 板块4：通知列表
+│  ● 工具箱 v0.3.0 已上线          │
+│  ● 欢迎使用工具箱                │
+├──────────────────────────────────┤
+│        工具箱 v0.3.0             │
+└──────────────────────────────────┘
+旧的 "新增公告" / "删除公告" 按钮已移除，所有内容改由服务器后台控制。
+
+新增/修改的文件
+服务端 (4 个新文件 + 2 个修改):
+
+文件	说明
+server/.../models/HomeConfig.kt	数据模型：HomeConfig, BannerItem, QuickToolItem, FeaturedCardItem, NoticeItem
+server/.../repository/HomeRepository.kt	数据库层：4 张新表 + 默认种子数据
+server/.../services/HomeService.kt	业务逻辑层
+server/.../routes/HomeRoutes.kt	REST API 端点
+server/.../plugins/Database.kt	✅ 添加了 HomeRepository.initTable()
+server/.../Application.kt	✅ 注册了 HomeService 和 homeRoutes
+客户端 (3 个新文件 + 4 个修改):
+
+文件	说明
+network/dto/HomeConfigDto.kt	Android 端 DTO
+viewmodel/HomeViewModel.kt	主页 ViewModel
+res/layout/fragment_home.xml	✅ 全新布局
+fragments/HomeFragment.kt	✅ 重写为服务端驱动
+fragments/BannerAdapter.kt	✅ 适配新数据模型
+network/ApiService.kt	✅ 添加 getHomeConfig()
+服务器后台使用说明
+1. 启动服务器
+
+cd server
+./gradlew run
+# 服务器运行在 http://localhost:8080
+首次启动会自动创建 4 张数据库表并填充默认数据。
+
+2. API 端点一览
+获取完整主页配置（客户端调用）
+
+curl http://localhost:8080/api/home/config
+响应示例：
+
+
+{
+  "banners": [
+    {"id":1, "title":"欢迎使用工具箱", "content":"实用工具，简单生活", "sortOrder":0},
+    {"id":2, "title":"社区功能已上线", "content":"加入社区，分享你的使用心得", "sortOrder":1}
+  ],
+  "quickTools": [
+    {"id":1, "toolId":"counter", "toolName":"计数器", "iconName":"ic_counter", "sortOrder":0, "enabled":true},
+    {"id":2, "toolId":"bmi", "toolName":"BMI计算", "iconName":"ic_bmi", "sortOrder":1, "enabled":true},
+    ...
+  ],
+  "featuredCards": [...],
+  "notices": [...]
+}
+Banner 管理
+
+# 查看所有 banner
+curl http://localhost:8080/api/home/banners
+
+# 批量替换 banner（会删除旧的全部替换）
+curl -X POST http://localhost:8080/api/home/banners \
+  -H "Content-Type: application/json" \
+  -d '{
+    "banners": [
+      {"title": "新活动上线", "content": "立即体验全新功能", "sortOrder": 0},
+      {"title": "使用技巧", "content": "长按+号可以快速增加计数", "sortOrder": 1},
+      {"title": "社区热帖", "content": "看看大家都在讨论什么", "sortOrder": 2}
+    ]
+  }'
+
+# 删除单个 banner
+curl -X DELETE http://localhost:8080/api/home/banners/1
+快捷工具管理
+
+# 查看当前工具
+curl http://localhost:8080/api/home/tools
+
+# 批量设置工具（会删除旧的，全部替换）
+curl -X POST http://localhost:8080/api/home/tools \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tools": [
+      {"toolId": "counter",    "toolName": "计数器",   "iconName": "ic_counter",    "sortOrder": 0, "enabled": true},
+      {"toolId": "calculator", "toolName": "计算器",   "iconName": "ic_calculator", "sortOrder": 1, "enabled": true},
+      {"toolId": "stopwatch",  "toolName": "秒表",     "iconName": "ic_stopwatch",  "sortOrder": 2, "enabled": true},
+      {"toolId": "bmi",        "toolName": "BMI计算",  "iconName": "ic_bmi",        "sortOrder": 3, "enabled": true},
+      {"toolId": "todo",       "toolName": "待办事项", "iconName": "ic_todo",       "sortOrder": 4, "enabled": true},
+      {"toolId": "notes",      "toolName": "便签",     "iconName": "ic_note",       "sortOrder": 5, "enabled": true}
+    ]
+  }'
+可用的 toolId 值： counter, calculator, stopwatch, timer, todo, random, converter, notes, bmi, wordcount
+
+可用的 iconName 值： ic_counter, ic_calculator, ic_stopwatch, ic_timer, ic_todo, ic_random, ic_convert, ic_note, ic_bmi, ic_word_count
+
+精选推荐管理
+
+# 查看
+curl http://localhost:8080/api/home/featured
+
+# 设置（批量替换）
+curl -X POST http://localhost:8080/api/home/featured \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cards": [
+      {"title": "加入社区讨论", "description": "分享你的使用心得", "actionType": "community", "actionValue": "", "sortOrder": 0},
+      {"title": "更多工具", "description": "探索全部实用工具", "actionType": "tools", "actionValue": "", "sortOrder": 1}
+    ]
+  }'
+actionType 可选值： "community"（跳转社区）、"tools"（跳转工具页）、""（无跳转）
+
+通知管理
+
+# 查看通知列表
+curl http://localhost:8080/api/home/notices
+
+# 添加通知
+curl -X POST http://localhost:8080/api/home/notices \
+  -H "Content-Type: application/json" \
+  -d '{"title": "系统维护通知", "content": "今晚 22:00-24:00 系统维护"}'
+
+# 删除通知
+curl -X DELETE http://localhost:8080/api/home/notices/1
+3. 扩展性
+添加更多板块：在 HomeConfig.kt 中新增数据类 → 在 HomeRepository.kt 中新建表 → 在 HomeRoutes.kt 中添加端点 → 在 HomeFragment.kt 的 applyConfig() 中添加渲染逻辑
+修改默认内容：编辑 HomeRepository.kt 中的 seedDefaultData() 方法
+工具图标和跳转映射：在 HomeFragment.kt 中的 toolIconMap 和 toolActivityMap 中添加新条目
+
+======================================
+
+个人主页已完成重新设计。以下是所做工作的概要：
+
+全新布局（fragment_mine.xml）
+登录后视图现在是一个专业的个人中心，分为几个卡片式区域：
+
+个人资料头部卡片 — 头像、用户名、会员徽章
+数据统计面板 — 收藏/关注/粉丝/动态 四个统计项
+账户信息 — 7 个可点击行（昵称、性别、生日、电话、邮箱、地址、个性签名），带图标 + 标签 + 值 + 箭头，点击后弹出编辑对话框
+应用设置 — 主题色系（含颜色预览圆点）、深色模式、语言设置——均直接在标签页内通过对话框操作，无需跳转
+数据管理 — 清除缓存
+关于 — 检查更新、关于我们、意见反馈、隐私政策
+退出登录按钮
+登录流程保持不变（基于 SharedPreferences 的登录/注册，dialog_register.xml）。
+
+新增资源
+11 个矢量图标（ic_gender.xml、ic_birthday.xml、ic_phone.xml、ic_email.xml、ic_address.xml、ic_bio.xml、ic_logout.xml、ic_stat_favorites.xml、ic_stat_followers.xml、ic_stat_following.xml、ic_stat_posts.xml）
+中英文各约 20 个新字符串
+
+=====================================
+版本号：app/build.gradle.kts 中 versionName → "1.0.0"
+应用名称：中文和英文字符串中的 app_name、app_title 以及所有文案引用（欢迎标题、关于信息、版本文字等）均改为 雨宫莲

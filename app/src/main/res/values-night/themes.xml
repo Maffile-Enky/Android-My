@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- 基础夜间主题：清新绿 -->
+    <!-- 基础夜间主题：天空蓝 -->
     <style name="Base.Theme.Jjjjjppppp" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/green_primary_dark_variant</item>
-        <item name="colorPrimaryDark">@color/green_primary_dark_dark_variant</item>
-        <item name="colorAccent">@color/green_accent_dark_variant</item>
+        <item name="colorPrimary">@color/blue_primary_dark_variant</item>
+        <item name="colorPrimaryDark">@color/blue_primary_dark_dark_variant</item>
+        <item name="colorAccent">@color/blue_accent_dark_variant</item>
     </style>
 
     <style name="Theme.Jjjjjppppp" parent="Base.Theme.Jjjjjppppp" />

@@ -1,12 +1,6 @@
 package com.example.jjjjjppppp.network
 
-import com.example.jjjjjppppp.network.dto.ChatListResponseDto
-import com.example.jjjjjppppp.network.dto.ConversationListResponseDto
-import com.example.jjjjjppppp.network.dto.ChatMessageDto
-import com.example.jjjjjppppp.network.dto.ChatRequestDto
-import com.example.jjjjjppppp.network.dto.PageResponseDto
-import com.example.jjjjjppppp.network.dto.PostDto
-import com.example.jjjjjppppp.network.dto.PostRequestDto
+import com.example.jjjjjppppp.network.dto.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -44,4 +38,9 @@ interface ApiService {
 
     @GET("api/chat/conversations")
     suspend fun getConversations(@Query("user") user: String): Response<ConversationListResponseDto>
+
+    // ==================== Home Config ====================
+
+    @GET("api/home/config")
+    suspend fun getHomeConfig(): Response<HomeConfigDto>
 }
