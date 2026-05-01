@@ -4,6 +4,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -144,6 +145,12 @@ class HomeFragment : Fragment() {
         buildNotices(config.notices)
     }
 
+    private fun dpToPx(dp: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics
+        ).toInt()
+    }
+
     // ==================== Banner ====================
 
     private fun setupBanner() {
@@ -198,7 +205,8 @@ class HomeFragment : Fragment() {
         indicatorContainer.removeAllViews()
         for (i in 0 until count) {
             val dot = View(requireContext())
-            val size = if (i == current) 10 else 8
+            val sizeDp = if (i == current) 10 else 8
+            val sizePx = dpToPx(sizeDp)
             val color = if (i == current) {
                 ThemeManager.getColorThemePrimaryColor(requireContext())
             } else {
@@ -207,14 +215,12 @@ class HomeFragment : Fragment() {
             val drawable = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
                 setColor(color)
-                setSize(size, size)
             }
+            drawable.setBounds(0, 0, sizePx, sizePx)
             dot.background = drawable
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(4, 0, 4, 0)
+            val params = LinearLayout.LayoutParams(sizePx, sizePx).apply {
+                marginStart = dpToPx(4)
+                marginEnd = dpToPx(4)
             }
             dot.layoutParams = params
             indicatorContainer.addView(dot)
@@ -238,11 +244,10 @@ class HomeFragment : Fragment() {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply { bottomMargin = 12 }
-                radius = 12f
-                cardElevation = 2f
-                setCardBackgroundColor(0xFFFFFFFF.toInt())
-                setContentPadding(20, 16, 20, 16)
+                ).apply { bottomMargin = dpToPx(12) }
+                radius = dpToPx(12).toFloat()
+                cardElevation = dpToPx(2).toFloat()
+                setContentPadding(dpToPx(20), dpToPx(16), dpToPx(20), dpToPx(16))
             }
 
             val contentLayout = LinearLayout(requireContext()).apply {
@@ -253,14 +258,13 @@ class HomeFragment : Fragment() {
                 text = card.title
                 textSize = 16f
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
-                setTextColor(0xFF333333.toInt())
             }
 
             val descView = TextView(requireContext()).apply {
                 text = card.description
                 textSize = 13f
                 setTextColor(0xFF999999.toInt())
-                setPadding(0, 6, 0, 0)
+                setPadding(0, dpToPx(6), 0, 0)
             }
 
             contentLayout.addView(titleView)
@@ -301,12 +305,13 @@ class HomeFragment : Fragment() {
         llNoticesContainer.visibility = View.VISIBLE
 
         val primaryColor = ThemeManager.getColorThemePrimaryColor(requireContext())
+        val dotSizePx = dpToPx(8)
 
         for (notice in notices) {
             val item = LinearLayout(requireContext()).apply {
                 orientation = LinearLayout.HORIZONTAL
                 gravity = Gravity.CENTER_VERTICAL
-                setPadding(0, 10, 0, 10)
+                setPadding(0, dpToPx(10), 0, dpToPx(10))
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -318,11 +323,11 @@ class HomeFragment : Fragment() {
                 val drawable = GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
                     setColor(primaryColor)
-                    setSize(8, 8)
                 }
+                drawable.setBounds(0, 0, dotSizePx, dotSizePx)
                 background = drawable
-                layoutParams = LinearLayout.LayoutParams(8, 8).apply {
-                    marginEnd = 12
+                layoutParams = LinearLayout.LayoutParams(dotSizePx, dotSizePx).apply {
+                    marginEnd = dpToPx(12)
                 }
             }
             item.addView(dot)
@@ -354,9 +359,11 @@ class HomeFragment : Fragment() {
             item.addView(contentLayout)
 
             // Click to show notice detail
+            val typedValue = TypedValue()
+            requireContext().theme.resolveAttribute(android.R.attr.selectableItemBackground, typedValue, true)
+            item.setBackgroundResource(typedValue.resourceId)
             item.isClickable = true
             item.isFocusable = true
-            item.setBackgroundResource(android.R.drawable.list_selector_background)
             item.setOnClickListener {
                 AlertDialog.Builder(requireContext())
                     .setTitle(notice.title)
@@ -368,8 +375,8 @@ class HomeFragment : Fragment() {
             // Separator line
             val separator = View(requireContext()).apply {
                 layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 1
-                ).apply { topMargin = 10 }
+                    LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(1)
+                ).apply { topMargin = dpToPx(10) }
                 setBackgroundColor(0xFFEEEEEE.toInt())
             }
 

@@ -43,6 +43,7 @@ data class NoticeItem(
     val id: Long = 0,
     val title: String,
     val content: String,
+    val imageUrl: String = "",
     val createdAt: String = ""
 )
 
@@ -57,4 +58,4 @@ data class QuickToolSaveRequest(val tools: List<QuickToolItem>)
 data class FeaturedCardSaveRequest(val cards: List<FeaturedCardItem>)
 
 @Serializable
-data class NoticeSaveRequest(val title: String, val content: String)
+data class NoticeSaveRequest(val title: String, val content: String, val imageUrl: String = "")

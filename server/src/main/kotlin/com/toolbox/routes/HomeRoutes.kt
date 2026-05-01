@@ -21,12 +21,20 @@ fun Route.homeRoutes(homeService: HomeService) {
         }
 
         post("/banners") {
+            if (!call.requireAdmin()) {
+                call.respond(HttpStatusCode.Forbidden, mapOf("error" to "需要管理员权限"))
+                return@post
+            }
             val request = call.receive<BannerSaveRequest>()
             homeService.saveBanners(request)
             call.respond(HttpStatusCode.OK, mapOf("status" to "ok"))
         }
 
         delete("/banners/{id}") {
+            if (!call.requireAdmin()) {
+                call.respond(HttpStatusCode.Forbidden, mapOf("error" to "需要管理员权限"))
+                return@delete
+            }
             val id = call.parameters["id"]?.toLongOrNull()
             if (id == null || !homeService.deleteBanner(id)) {
                 call.respond(HttpStatusCode.NotFound, "Banner not found")
@@ -41,6 +49,10 @@ fun Route.homeRoutes(homeService: HomeService) {
         }
 
         post("/tools") {
+            if (!call.requireAdmin()) {
+                call.respond(HttpStatusCode.Forbidden, mapOf("error" to "需要管理员权限"))
+                return@post
+            }
             val request = call.receive<QuickToolSaveRequest>()
             homeService.saveAllTools(request)
             call.respond(HttpStatusCode.OK, mapOf("status" to "ok"))
@@ -52,6 +64,10 @@ fun Route.homeRoutes(homeService: HomeService) {
         }
 
         post("/featured") {
+            if (!call.requireAdmin()) {
+                call.respond(HttpStatusCode.Forbidden, mapOf("error" to "需要管理员权限"))
+                return@post
+            }
             val request = call.receive<FeaturedCardSaveRequest>()
             homeService.saveAllFeatured(request)
             call.respond(HttpStatusCode.OK, mapOf("status" to "ok"))
@@ -63,6 +79,10 @@ fun Route.homeRoutes(homeService: HomeService) {
         }
 
         post("/notices") {
+            if (!call.requireAdmin()) {
+                call.respond(HttpStatusCode.Forbidden, mapOf("error" to "需要管理员权限"))
+                return@post
+            }
             val request = call.receive<NoticeSaveRequest>()
             if (request.title.isBlank() || request.content.isBlank()) {
                 call.respond(HttpStatusCode.BadRequest, "Title and content are required")
@@ -73,6 +93,10 @@ fun Route.homeRoutes(homeService: HomeService) {
         }
 
         delete("/notices/{id}") {
+            if (!call.requireAdmin()) {
+                call.respond(HttpStatusCode.Forbidden, mapOf("error" to "需要管理员权限"))
+                return@delete
+            }
             val id = call.parameters["id"]?.toLongOrNull()
             if (id == null || !homeService.deleteNotice(id)) {
                 call.respond(HttpStatusCode.NotFound, "Notice not found")

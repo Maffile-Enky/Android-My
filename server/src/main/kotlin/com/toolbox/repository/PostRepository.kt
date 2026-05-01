@@ -66,6 +66,10 @@ object PostRepository {
         PostsTable.deleteWhere { (PostsTable.id eq id) and (PostsTable.author eq author) } > 0
     }
 
+    fun adminDelete(id: Long): Boolean = transaction {
+        PostsTable.deleteWhere { PostsTable.id eq id } > 0
+    }
+
     private fun ResultRow.toPost(): Post = Post(
         id = this[PostsTable.id].value,
         author = this[PostsTable.author],

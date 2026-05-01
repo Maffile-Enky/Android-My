@@ -20,8 +20,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import android.net.Uri
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.jjjjjppppp.R
+import com.example.jjjjjppppp.network.RetrofitClient
+import com.example.jjjjjppppp.network.dto.LoginRequestDto
+import com.example.jjjjjppppp.network.dto.RegisterRequestDto
 import com.example.jjjjjppppp.utils.ThemeManager
+import com.example.jjjjjppppp.utils.UpdateChecker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.util.Calendar
 
 class MineFragment : Fragment() {
@@ -40,6 +57,8 @@ class MineFragment : Fragment() {
     private lateinit var layoutProfileSection: LinearLayout
     private lateinit var tvProfileName: TextView
     private lateinit var tvMemberBadge: TextView
+    private lateinit var ivProfileAvatar: ImageView
+    private lateinit var avatarPickerLauncher: ActivityResultLauncher<String>
 
     // Stats views
     private lateinit var tvStatFavorites: TextView
@@ -76,6 +95,11 @@ class MineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Register avatar picker
+        avatarPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { uploadAvatar(it) }
+        }
+
         // Login views
         layoutLoginSection = view.findViewById(R.id.layoutLoginSection)
         cardLoginForm = view.findViewById(R.id.cardLoginForm)
@@ -90,6 +114,10 @@ class MineFragment : Fragment() {
         layoutProfileSection = view.findViewById(R.id.layoutProfileSection)
         tvProfileName = view.findViewById(R.id.tvProfileName)
         tvMemberBadge = view.findViewById(R.id.tvMemberBadge)
+        ivProfileAvatar = view.findViewById(R.id.ivProfileAvatar)
+        ivProfileAvatar.setOnClickListener {
+            if (isLoggedIn) avatarPickerLauncher.launch("image/*")
+        }
 
         // Stats
         tvStatFavorites = view.findViewById(R.id.tvStatFavorites)
@@ -134,6 +162,28 @@ class MineFragment : Fragment() {
 
         if (isLoggedIn && currentUsername.isNotEmpty()) {
             showProfileSection()
+            // Verify token with server in background
+            val token = prefs.getString("auth_token", null)
+            if (token != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val response = RetrofitClient.apiService.getProfile()
+                        withContext(Dispatchers.Main) {
+                            if (!response.isSuccessful) {
+                                prefs.edit().remove("auth_token").remove("user_role").apply()
+                            } else {
+                                val user = response.body()
+                                if (user != null) {
+                                    prefs.edit().putString("user_role", user.role).apply()
+                                    prefs.edit().putString("user_avatar", user.avatar).apply()
+                                    tvMemberBadge.text = if (user.role == "admin") "管理员" else getString(R.string.member_regular)
+                                    loadAvatar(user.avatar)
+                                }
+                            }
+                        }
+                    } catch (_: Exception) { }
+                }
+            }
         } else {
             showLoginSection()
         }
@@ -153,8 +203,58 @@ class MineFragment : Fragment() {
         layoutLoginSection.visibility = View.GONE
         layoutProfileSection.visibility = View.VISIBLE
         tvProfileName.text = currentUsername
-        tvMemberBadge.text = getString(R.string.member_regular)
+        val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
+        val role = prefs.getString("user_role", "user") ?: "user"
+        tvMemberBadge.text = if (role == "admin") "管理员" else getString(R.string.member_regular)
+        // Load avatar
+        val avatarUrl = prefs.getString("user_avatar", "") ?: ""
+        loadAvatar(avatarUrl)
         refreshAllDisplays()
+    }
+
+    private fun loadAvatar(avatarUrl: String) {
+        if (avatarUrl.isNotEmpty()) {
+            val fullUrl = if (avatarUrl.startsWith("http")) avatarUrl else "${RetrofitClient.BASE_URL.trimEnd('/')}$avatarUrl"
+            ivProfileAvatar.load(fullUrl) {
+                transformations(CircleCropTransformation())
+                placeholder(R.mipmap.ic_launcher)
+                error(R.mipmap.ic_launcher)
+            }
+        } else {
+            ivProfileAvatar.setImageResource(R.mipmap.ic_launcher)
+        }
+    }
+
+    private fun uploadAvatar(uri: Uri) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val context = requireContext()
+                val inputStream = context.contentResolver.openInputStream(uri) ?: return@launch
+                val bytes = inputStream.readBytes()
+                inputStream.close()
+
+                val requestBody = bytes.toRequestBody("image/*".toMediaTypeOrNull())
+                val part = MultipartBody.Part.createFormData("file", "avatar.jpg", requestBody)
+
+                val response = RetrofitClient.apiService.uploadAvatar(part)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val url = response.body()!!.url
+                        // Save avatar URL
+                        val prefs = context.getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
+                        prefs.edit().putString("user_avatar", url).apply()
+                        loadAvatar(url)
+                        Toast.makeText(context, "头像更新成功", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "头像上传失败", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "上传错误: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setupLoginListeners() {
@@ -167,34 +267,63 @@ class MineFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
-            val users = prefs.getStringSet("registered_users", emptySet()) ?: emptySet()
-
-            if (!users.contains(username)) {
-                Toast.makeText(requireContext(), getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            // Try server-side login
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitClient.apiService.login(LoginRequestDto(username, password))
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful && response.body() != null) {
+                            val authData = response.body()!!
+                            val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
+                            prefs.edit().apply {
+                                putBoolean("is_logged_in", true)
+                                putString("current_user", username)
+                                putString("auth_token", authData.token)
+                                putString("user_role", authData.user.role)
+                                apply()
+                            }
+                            isLoggedIn = true
+                            currentUsername = username
+                            showProfileSection()
+                            Toast.makeText(requireContext(), getString(R.string.login_success, username), Toast.LENGTH_SHORT).show()
+                        } else {
+                            val error = try { JSONObject(response.errorBody()?.string() ?: "").optString("error", getString(R.string.wrong_password)) } catch (_: Exception) { getString(R.string.wrong_password) }
+                            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    // Fallback to local login
+                    withContext(Dispatchers.Main) { localLogin(username, password) }
+                }
             }
-
-            val savedPassword = prefs.getString("pwd_$username", "")
-            if (password != savedPassword) {
-                Toast.makeText(requireContext(), getString(R.string.wrong_password), Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            prefs.edit().apply {
-                putBoolean("is_logged_in", true)
-                putString("current_user", username)
-                apply()
-            }
-            isLoggedIn = true
-            currentUsername = username
-            showProfileSection()
-            Toast.makeText(requireContext(), getString(R.string.login_success, username), Toast.LENGTH_SHORT).show()
         }
 
         btnRegister.setOnClickListener {
             showRegisterDialog()
         }
+    }
+
+    private fun localLogin(username: String, password: String) {
+        val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
+        val users = prefs.getStringSet("registered_users", emptySet()) ?: emptySet()
+        if (!users.contains(username)) {
+            Toast.makeText(requireContext(), getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
+            return
+        }
+        val savedPassword = prefs.getString("pwd_$username", "")
+        if (password != savedPassword) {
+            Toast.makeText(requireContext(), getString(R.string.wrong_password), Toast.LENGTH_SHORT).show()
+            return
+        }
+        prefs.edit().apply {
+            putBoolean("is_logged_in", true)
+            putString("current_user", username)
+            apply()
+        }
+        isLoggedIn = true
+        currentUsername = username
+        showProfileSection()
+        Toast.makeText(requireContext(), getString(R.string.login_success, username), Toast.LENGTH_SHORT).show()
     }
 
     private fun setupProfileListeners() {
@@ -229,29 +358,59 @@ class MineFragment : Fragment() {
                     return@setPositiveButton
                 }
 
-                val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
-                val users = prefs.getStringSet("registered_users", emptySet())?.toMutableSet() ?: mutableSetOf()
-
-                if (users.contains(username)) {
-                    Toast.makeText(requireContext(), getString(R.string.username_exists), Toast.LENGTH_SHORT).show()
-                    return@setPositiveButton
+                // Try server-side registration
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val response = RetrofitClient.apiService.register(RegisterRequestDto(username, password))
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful && response.body() != null) {
+                                val authData = response.body()!!
+                                val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
+                                prefs.edit().apply {
+                                    putBoolean("is_logged_in", true)
+                                    putString("current_user", username)
+                                    putString("auth_token", authData.token)
+                                    putString("user_role", authData.user.role)
+                                    apply()
+                                }
+                                isLoggedIn = true
+                                currentUsername = username
+                                showProfileSection()
+                                Toast.makeText(requireContext(), getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+                            } else {
+                                val error = try { JSONObject(response.errorBody()?.string() ?: "").optString("error", getString(R.string.username_exists)) } catch (_: Exception) { getString(R.string.username_exists) }
+                                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        // Fallback to local registration
+                        withContext(Dispatchers.Main) { localRegister(username, password) }
+                    }
                 }
-
-                users.add(username)
-                prefs.edit().apply {
-                    putStringSet("registered_users", users)
-                    putString("pwd_$username", password)
-                    putBoolean("is_logged_in", true)
-                    putString("current_user", username)
-                    apply()
-                }
-                isLoggedIn = true
-                currentUsername = username
-                showProfileSection()
-                Toast.makeText(requireContext(), getString(R.string.register_success), Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton(getString(R.string.cancel), null)
             .show()
+    }
+
+    private fun localRegister(username: String, password: String) {
+        val prefs = requireContext().getSharedPreferences("user_accounts", Context.MODE_PRIVATE)
+        val users = prefs.getStringSet("registered_users", emptySet())?.toMutableSet() ?: mutableSetOf()
+        if (users.contains(username)) {
+            Toast.makeText(requireContext(), getString(R.string.username_exists), Toast.LENGTH_SHORT).show()
+            return
+        }
+        users.add(username)
+        prefs.edit().apply {
+            putStringSet("registered_users", users)
+            putString("pwd_$username", password)
+            putBoolean("is_logged_in", true)
+            putString("current_user", username)
+            apply()
+        }
+        isLoggedIn = true
+        currentUsername = username
+        showProfileSection()
+        Toast.makeText(requireContext(), getString(R.string.register_success), Toast.LENGTH_SHORT).show()
     }
 
     private fun logout() {
@@ -259,10 +418,14 @@ class MineFragment : Fragment() {
         prefs.edit().apply {
             putBoolean("is_logged_in", false)
             remove("current_user")
+            remove("auth_token")
+            remove("user_role")
+            remove("user_avatar")
             apply()
         }
         isLoggedIn = false
         currentUsername = ""
+        ivProfileAvatar.setImageResource(R.mipmap.ic_launcher)
         showLoginSection()
         etUsername.text.clear()
         etPassword.text.clear()
@@ -342,7 +505,7 @@ class MineFragment : Fragment() {
             Toast.makeText(requireContext(), getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show()
         }
         view.findViewById<View>(R.id.rowCheckUpdate).setOnClickListener {
-            Toast.makeText(requireContext(), getString(R.string.latest_version), Toast.LENGTH_SHORT).show()
+            UpdateChecker.checkForUpdate(requireContext())
         }
         view.findViewById<View>(R.id.rowAbout).setOnClickListener {
             Toast.makeText(requireContext(), getString(R.string.about_info), Toast.LENGTH_LONG).show()

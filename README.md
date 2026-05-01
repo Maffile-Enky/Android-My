@@ -311,3 +311,30 @@ curl -X DELETE http://localhost:8080/api/home/notices/1
 =====================================
 版本号：app/build.gradle.kts 中 versionName → "1.0.0"
 应用名称：中文和英文字符串中的 app_name、app_title 以及所有文案引用（欢迎标题、关于信息、版本文字等）均改为 雨宫莲
+
+======================================
+
+服务端
+数据库 — users 表添加 avatar 列，home_notices 表添加 image_url 列
+API — 新增 4 个上传接口：
+POST /api/upload/avatar — 用户上传自己的头像（需认证）
+POST /api/upload/notice-image — 管理员上传公告图片
+POST /api/admin/users/{id}/avatar — 管理员修改任意用户头像
+PUT /api/admin/users/{id}/info — 管理员修改用户信息
+静态文件 — /uploads/ 目录存放上传的图片
+管理后台
+用户列表显示头像缩略图，点击「编辑」可上传头像、修改角色
+公告发布支持配图上传，列表显示图片缩略图
+Android 客户端
+MineFragment 头像区域可点击选择图片上传
+使用 Coil 库加载圆形头像
+头像 URL 从服务器同步，登录后自动显示
+部署到 ECS 时需要：
+
+
+# 上传新的 server.jar 和 index.html
+scp server/build/libs/server.jar root@47.99.34.251:/opt/toolbox-server/server.jar
+scp server/static/admin/index.html root@47.99.34.251:/opt/toolbox-server/static/admin/index.html
+
+# 在 ECS 上创建 uploads 目录
+ssh root@47.99.34.251 "mkdir -p /opt/toolbox-server/static/uploads && systemctl restart toolbox-server"

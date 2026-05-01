@@ -4,26 +4,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.example.jjjjjppppp.network.RetrofitClient
 
 class SplashActivity : AppCompatActivity() {
 
-    private lateinit var logoImageView: ImageView
+    private var keepSplash = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { keepSplash }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        logoImageView = findViewById(R.id.logoImageView)
+        RetrofitClient.init(this)
 
-        // 加载动画
+        val logoImageView = findViewById<ImageView>(R.id.logoImageView)
         val animation = AnimationUtils.loadAnimation(this, R.anim.fade_in)
         logoImageView.startAnimation(animation)
 
-        // 延迟3秒后跳转到主界面
         Handler(Looper.getMainLooper()).postDelayed({
+            keepSplash = false
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, 3000)

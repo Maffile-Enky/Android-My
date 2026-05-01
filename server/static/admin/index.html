@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工具箱管理后台</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; color: #333; }
+
+/* Login Overlay */
+.login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.login-box { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 380px; }
+.login-box h2 { text-align: center; margin-bottom: 8px; color: #333; font-size: 24px; }
+.login-box .subtitle { text-align: center; color: #999; margin-bottom: 30px; font-size: 14px; }
+.login-box input { width: 100%; padding: 12px 16px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; margin-bottom: 16px; outline: none; transition: border-color 0.2s; }
+.login-box input:focus { border-color: #667eea; }
+.login-box button { width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: opacity 0.2s; }
+.login-box button:hover { opacity: 0.9; }
+.login-error { color: #e74c3c; text-align: center; margin-bottom: 12px; font-size: 14px; display: none; }
+
+/* Layout */
+.app-layout { display: none; height: 100vh; }
+.sidebar { width: 240px; background: #001529; color: #fff; position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; transition: transform 0.3s; }
+.sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-header h3 { font-size: 18px; color: #fff; }
+.sidebar-header p { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+.sidebar-menu { list-style: none; padding: 10px 0; }
+.sidebar-menu li { padding: 12px 24px; cursor: pointer; transition: all 0.2s; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+.sidebar-menu li:hover { background: rgba(255,255,255,0.08); }
+.sidebar-menu li.active { background: #667eea; color: #fff; }
+.sidebar-menu li .icon { width: 20px; text-align: center; }
+
+.main-content { margin-left: 240px; min-height: 100vh; }
+.top-bar { background: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+.top-bar h2 { font-size: 18px; color: #333; }
+.btn-logout { padding: 8px 16px; background: #ff4d4f; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.btn-logout:hover { background: #ff7875; }
+
+.content-area { padding: 24px; }
+
+/* Cards */
+.section { display: none; }
+.section.active { display: block; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.stat-card .label { font-size: 13px; color: #999; margin-bottom: 8px; }
+.stat-card .value { font-size: 28px; font-weight: 600; color: #333; }
+
+/* Tables */
+.card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+.card-header { padding: 16px 20px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+.card-header h3 { font-size: 16px; }
+.card-body { padding: 20px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+th { background: #fafafa; font-weight: 600; color: #666; }
+tr:hover { background: #fafafa; }
+
+/* Buttons */
+.btn { padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; transition: opacity 0.2s; }
+.btn:hover { opacity: 0.85; }
+.btn-primary { background: #667eea; color: #fff; }
+.btn-danger { background: #ff4d4f; color: #fff; }
+.btn-success { background: #52c41a; color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-group { display: flex; gap: 6px; }
+
+/* Forms */
+.form-row { margin-bottom: 16px; }
+.form-row label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; font-weight: 500; }
+.form-row input, .form-row textarea, .form-row select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none; }
+.form-row input:focus, .form-row textarea:focus { border-color: #667eea; }
+.form-row textarea { resize: vertical; min-height: 80px; }
+.form-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); z-index: 500; display: none; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: #fff; border-radius: 10px; width: 500px; max-height: 80vh; overflow-y: auto; }
+.modal-header { padding: 16px 20px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h3 { font-size: 16px; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
+.modal-body { padding: 20px; }
+
+/* Badge */
+.badge { padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+
+/* Avatar */
+.avatar-sm { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: #e8e8e8; }
+.avatar-lg { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; background: #e8e8e8; cursor: pointer; border: 3px solid #667eea; }
+.avatar-placeholder { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 600; }
+.img-sm { width: 48px; height: 36px; object-fit: cover; border-radius: 4px; background: #f0f0f0; }
+.badge-admin { background: #fff1f0; color: #ff4d4f; }
+.badge-user { background: #f6ffed; color: #52c41a; }
+.badge-yes { background: #fff1f0; color: #ff4d4f; }
+.badge-no { background: #f0f0f0; color: #999; }
+
+/* Pagination */
+.pagination { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 16px; }
+.pagination button { padding: 6px 12px; border: 1px solid #ddd; background: #fff; border-radius: 4px; cursor: pointer; }
+.pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+.pagination span { font-size: 13px; color: #666; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Login Overlay -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <h2>管理后台</h2>
+        <p class="subtitle">Toolbox Admin Panel</p>
+        <div class="login-error" id="loginError">用户名或密码错误</div>
+        <input type="text" id="loginUsername" placeholder="用户名" value="root">
+        <input type="password" id="loginPassword" placeholder="密码" value="root">
+        <button onclick="doLogin()">登 录</button>
+    </div>
+</div>
+
+<!-- App Layout -->
+<div class="app-layout" id="appLayout">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>工具箱管理</h3>
+            <p>Admin Panel v1.0</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="active" onclick="switchSection('dashboard', this)"><span class="icon">&#9632;</span> 仪表盘</li>
+            <li onclick="switchSection('banners', this)"><span class="icon">&#9654;</span> 横幅管理</li>
+            <li onclick="switchSection('tools', this)"><span class="icon">&#9881;</span> 快捷工具</li>
+            <li onclick="switchSection('featured', this)"><span class="icon">&#9733;</span> 精选卡片</li>
+            <li onclick="switchSection('notices', this)"><span class="icon">&#9998;</span> 公告管理</li>
+            <li onclick="switchSection('posts', this)"><span class="icon">&#9993;</span> 帖子管理</li>
+            <li onclick="switchSection('users', this)"><span class="icon">&#9823;</span> 用户管理</li>
+            <li onclick="switchSection('versions', this)"><span class="icon">&#8679;</span> 版本管理</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <h2 id="sectionTitle">仪表盘</h2>
+            <button class="btn-logout" onclick="doLogout()">退出登录</button>
+        </div>
+        <div class="content-area">
+
+            <!-- Dashboard -->
+            <div class="section active" id="sec-dashboard">
+                <div class="stats-grid" id="dashboardStats"></div>
+                <div class="card">
+                    <div class="card-header"><h3>系统信息</h3></div>
+                    <div class="card-body" id="systemInfo"></div>
+                </div>
+            </div>
+
+            <!-- Banners -->
+            <div class="section" id="sec-banners">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>横幅列表</h3>
+                        <button class="btn btn-primary" onclick="showBannerForm()">添加横幅</button>
+                    </div>
+                    <div class="card-body"><table><thead><tr><th>ID</th><th>标题</th><th>内容</th><th>排序</th><th>操作</th></tr></thead><tbody id="bannersTable"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Tools -->
+            <div class="section" id="sec-tools">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>快捷工具列表</h3>
+                        <button class="btn btn-primary" onclick="showToolForm()">添加工具</button>
+                    </div>
+                    <div class="card-body"><table><thead><tr><th>ID</th><th>工具ID</th><th>名称</th><th>图标</th><th>排序</th><th>启用</th><th>操作</th></tr></thead><tbody id="toolsTable"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Featured -->
+            <div class="section" id="sec-featured">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>精选卡片列表</h3>
+                        <button class="btn btn-primary" onclick="showFeaturedForm()">添加卡片</button>
+                    </div>
+                    <div class="card-body"><table><thead><tr><th>ID</th><th>标题</th><th>描述</th><th>操作类型</th><th>排序</th><th>操作</th></tr></thead><tbody id="featuredTable"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Notices -->
+            <div class="section" id="sec-notices">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>公告列表</h3>
+                        <button class="btn btn-primary" onclick="showNoticeForm()">发布公告</button>
+                    </div>
+                    <div class="card-body"><table><thead><tr><th>ID</th><th>图片</th><th>标题</th><th>内容</th><th>发布时间</th><th>操作</th></tr></thead><tbody id="noticesTable"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="section" id="sec-posts">
+                <div class="card">
+                    <div class="card-header"><h3>帖子列表</h3></div>
+                    <div class="card-body"><table><thead><tr><th>ID</th><th>标题</th><th>作者</th><th>点赞</th><th>发布时间</th><th>操作</th></tr></thead><tbody id="postsTable"></tbody></table></div>
+                    <div class="pagination" id="postsPagination"></div>
+                </div>
+            </div>
+
+            <!-- Users -->
+            <div class="section" id="sec-users">
+                <div class="card">
+                    <div class="card-header"><h3>用户列表</h3></div>
+                    <div class="card-body"><table><thead><tr><th>ID</th><th>头像</th><th>用户名</th><th>角色</th><th>注册时间</th><th>操作</th></tr></thead><tbody id="usersTable"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- Versions -->
+            <div class="section" id="sec-versions">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>版本列表</h3>
+                        <button class="btn btn-primary" onclick="showVersionForm()">发布新版本</button>
+                    </div>
+                    <div class="card-body"><table><thead><tr><th>ID</th><th>版本号</th><th>版本名</th><th>更新日志</th><th>强制更新</th><th>发布时间</th><th>操作</th></tr></thead><tbody id="versionsTable"></tbody></table></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>APK 上传说明</h3></div>
+                    <div class="card-body">
+                        <p style="font-size:14px;color:#666;line-height:1.8;">
+                            APK 文件需要手动上传到服务器的 <code>static/files/</code> 目录。<br>
+                            上传命令：<code>scp app-v1.1.0.apk root@server:/opt/toolbox-server/static/files/</code><br>
+                            然后在上方填写 APK 地址为 <code>/files/app-v1.1.0.apk</code>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="modalTitle">标题</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+// ======== API Layer ========
+const API_BASE = '';
+let token = localStorage.getItem('admin_token') || '';
+
+async function api(path, options = {}) {
+    const headers = { 'Content-Type': 'application/json', ...options.headers };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const resp = await fetch(API_BASE + path, { ...options, headers });
+    if (resp.status === 401 || resp.status === 403) {
+        const data = await resp.json().catch(() => ({}));
+        if (data.error && data.error.includes('令牌')) { doLogout(); return null; }
+    }
+    return resp;
+}
+
+async function apiGet(path) { return (await api(path)).json(); }
+async function apiPost(path, body) { return api(path, { method: 'POST', body: JSON.stringify(body) }); }
+async function apiDelete(path) { return api(path, { method: 'DELETE' }); }
+async function apiPut(path, body) { return api(path, { method: 'PUT', body: JSON.stringify(body) }); }
+
+// ======== Login ========
+async function doLogin() {
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    const errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+    try {
+        const resp = await fetch(API_BASE + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const data = await resp.json();
+        if (resp.ok && data.token) {
+            token = data.token;
+            localStorage.setItem('admin_token', token);
+            if (data.user.role !== 'admin') {
+                errEl.textContent = '该账户不是管理员';
+                errEl.style.display = 'block';
+                token = '';
+                localStorage.removeItem('admin_token');
+                return;
+            }
+            showApp();
+        } else {
+            errEl.textContent = data.error || '登录失败';
+            errEl.style.display = 'block';
+        }
+    } catch (e) {
+        errEl.textContent = '网络错误';
+        errEl.style.display = 'block';
+    }
+}
+
+function doLogout() {
+    token = '';
+    localStorage.removeItem('admin_token');
+    document.getElementById('loginOverlay').style.display = 'flex';
+    document.getElementById('appLayout').style.display = 'none';
+}
+
+function showApp() {
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('appLayout').style.display = 'block';
+    loadDashboard();
+}
+
+// ======== Section Navigation ========
+const sectionTitles = {
+    dashboard: '仪表盘', banners: '横幅管理', tools: '快捷工具',
+    featured: '精选卡片', notices: '公告管理', posts: '帖子管理',
+    users: '用户管理', versions: '版本管理'
+};
+
+function switchSection(name, el) {
+    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+    if (el) el.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('sec-' + name).classList.add('active');
+    document.getElementById('sectionTitle').textContent = sectionTitles[name] || name;
+    const loaders = { dashboard: loadDashboard, banners: loadBanners, tools: loadTools, featured: loadFeatured, notices: loadNotices, posts: loadPosts, users: loadUsers, versions: loadVersions };
+    if (loaders[name]) loaders[name]();
+}
+
+// ======== Modal ========
+function openModal(title, bodyHtml) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalBody').innerHTML = bodyHtml;
+    document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+
+// ======== Dashboard ========
+async function loadDashboard() {
+    try {
+        const [users, posts, config, versions] = await Promise.all([
+            apiGet('/api/admin/users').catch(() => ({ users: [] })),
+            apiGet('/api/posts?page=0&size=1').catch(() => ({ total: 0 })),
+            apiGet('/api/home/config').catch(() => ({})),
+            apiGet('/api/admin/versions').catch(() => ({ versions: [] }))
+        ]);
+        document.getElementById('dashboardStats').innerHTML = `
+            <div class="stat-card"><div class="label">注册用户</div><div class="value">${(users.users||[]).length}</div></div>
+            <div class="stat-card"><div class="label">帖子总数</div><div class="value">${posts.total || 0}</div></div>
+            <div class="stat-card"><div class="label">横幅数量</div><div class="value">${(config.banners||[]).length}</div></div>
+            <div class="stat-card"><div class="label">快捷工具</div><div class="value">${(config.quickTools||[]).length}</div></div>
+            <div class="stat-card"><div class="label">精选卡片</div><div class="value">${(config.featuredCards||[]).length}</div></div>
+            <div class="stat-card"><div class="label">公告数量</div><div class="value">${(config.notices||[]).length}</div></div>
+            <div class="stat-card"><div class="label">版本记录</div><div class="value">${(versions.versions||[]).length}</div></div>
+        `;
+        const latest = (versions.versions||[])[0];
+        document.getElementById('systemInfo').innerHTML = `
+            <p style="font-size:14px;color:#666;line-height:2;">
+                服务端框架：Ktor 3.1.0 + H2 数据库<br>
+                最新版本：${latest ? latest.versionName + ' (' + latest.createdAt + ')' : '暂无'}<br>
+                管理后台：v1.0<br>
+                服务器时间：${new Date().toLocaleString('zh-CN')}
+            </p>
+        `;
+    } catch (e) {
+        document.getElementById('dashboardStats').innerHTML = '<p style="color:#999;">加载失败</p>';
+    }
+}
+
+// ======== Load data section by section (will be filled in next stages) ========
+// Placeholder functions - implemented in subsequent stages
+
+// ======== Banners ========
+async function loadBanners() {
+    const data = await apiGet('/api/home/banners');
+    const tbody = document.getElementById('bannersTable');
+    if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;">暂无数据</td></tr>'; return; }
+    tbody.innerHTML = data.map(b => `<tr>
+        <td>${b.id}</td><td>${esc(b.title)}</td><td>${esc(b.content)}</td><td>${b.sortOrder}</td>
+        <td><div class="btn-group"><button class="btn btn-danger btn-sm" onclick="deleteBanner(${b.id})">删除</button></div></td>
+    </tr>`).join('');
+}
+
+function showBannerForm() {
+    openModal('添加横幅', `
+        <div class="form-row"><label>标题</label><input id="fBannerTitle" placeholder="横幅标题"></div>
+        <div class="form-row"><label>内容</label><textarea id="fBannerContent" placeholder="横幅内容"></textarea></div>
+        <div class="form-row"><label>排序</label><input id="fBannerSort" type="number" value="0"></div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="saveBanner()">保存</button><button class="btn" onclick="closeModal()">取消</button></div>
+    `);
+}
+
+async function saveBanner() {
+    const title = document.getElementById('fBannerTitle').value.trim();
+    const content = document.getElementById('fBannerContent').value.trim();
+    const sortOrder = parseInt(document.getElementById('fBannerSort').value) || 0;
+    if (!title) { alert('请输入标题'); return; }
+    const existing = await apiGet('/api/home/banners');
+    const banners = [...(existing || []), { title, content, sortOrder }];
+    const resp = await apiPost('/api/home/banners', { banners });
+    if (resp && resp.ok) { closeModal(); loadBanners(); } else { alert('保存失败'); }
+}
+
+async function deleteBanner(id) {
+    if (!confirm('确定删除此横幅？')) return;
+    const resp = await apiDelete('/api/home/banners/' + id);
+    if (resp && resp.ok) loadBanners(); else alert('删除失败');
+}
+
+// ======== Tools ========
+async function loadTools() {
+    const data = await apiGet('/api/home/tools');
+    const tbody = document.getElementById('toolsTable');
+    if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999;">暂无数据</td></tr>'; return; }
+    tbody.innerHTML = data.map(t => `<tr>
+        <td>${t.id}</td><td>${esc(t.toolId)}</td><td>${esc(t.toolName)}</td><td>${esc(t.iconName)}</td>
+        <td>${t.sortOrder}</td><td>${t.enabled ? '<span class="badge badge-yes">启用</span>' : '<span class="badge badge-no">禁用</span>'}</td>
+        <td><div class="btn-group"><button class="btn btn-danger btn-sm" onclick="deleteTool(${t.id})">删除</button></div></td>
+    </tr>`).join('');
+}
+
+function showToolForm() {
+    openModal('添加工具', `
+        <div class="form-row"><label>工具ID</label><input id="fToolId" placeholder="如 counter, calculator"></div>
+        <div class="form-row"><label>工具名称</label><input id="fToolName" placeholder="如 计算器"></div>
+        <div class="form-row"><label>图标名称</label><input id="fToolIcon" placeholder="如 ic_calculator"></div>
+        <div class="form-row"><label>排序</label><input id="fToolSort" type="number" value="0"></div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="saveTool()">保存</button><button class="btn" onclick="closeModal()">取消</button></div>
+    `);
+}
+
+async function saveTool() {
+    const toolId = document.getElementById('fToolId').value.trim();
+    const toolName = document.getElementById('fToolName').value.trim();
+    const iconName = document.getElementById('fToolIcon').value.trim();
+    const sortOrder = parseInt(document.getElementById('fToolSort').value) || 0;
+    if (!toolId || !toolName) { alert('请填写必填项'); return; }
+    const existing = await apiGet('/api/home/tools');
+    const tools = [...(existing || []), { toolId, toolName, iconName, sortOrder, enabled: true }];
+    const resp = await apiPost('/api/home/tools', { tools });
+    if (resp && resp.ok) { closeModal(); loadTools(); } else { alert('保存失败'); }
+}
+
+async function deleteTool(id) {
+    if (!confirm('确定删除此工具？')) return;
+    const existing = await apiGet('/api/home/tools');
+    const tools = (existing || []).filter(t => t.id !== id);
+    const resp = await apiPost('/api/home/tools', { tools });
+    if (resp && resp.ok) loadTools(); else alert('删除失败');
+}
+
+// ======== Featured ========
+async function loadFeatured() {
+    const data = await apiGet('/api/home/featured');
+    const tbody = document.getElementById('featuredTable');
+    if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;">暂无数据</td></tr>'; return; }
+    tbody.innerHTML = data.map(f => `<tr>
+        <td>${f.id}</td><td>${esc(f.title)}</td><td>${esc(f.description)}</td><td>${esc(f.actionType)}</td><td>${f.sortOrder}</td>
+        <td><div class="btn-group"><button class="btn btn-danger btn-sm" onclick="deleteFeatured(${f.id})">删除</button></div></td>
+    </tr>`).join('');
+}
+
+function showFeaturedForm() {
+    openModal('添加精选卡片', `
+        <div class="form-row"><label>标题</label><input id="fFeatTitle" placeholder="卡片标题"></div>
+        <div class="form-row"><label>描述</label><textarea id="fFeatDesc" placeholder="卡片描述"></textarea></div>
+        <div class="form-row"><label>操作类型</label><input id="fFeatAction" placeholder="如 community, tool"></div>
+        <div class="form-row"><label>操作值</label><input id="fFeatValue" placeholder="如 /community"></div>
+        <div class="form-row"><label>排序</label><input id="fFeatSort" type="number" value="0"></div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="saveFeatured()">保存</button><button class="btn" onclick="closeModal()">取消</button></div>
+    `);
+}
+
+async function saveFeatured() {
+    const title = document.getElementById('fFeatTitle').value.trim();
+    const description = document.getElementById('fFeatDesc').value.trim();
+    const actionType = document.getElementById('fFeatAction').value.trim();
+    const actionValue = document.getElementById('fFeatValue').value.trim();
+    const sortOrder = parseInt(document.getElementById('fFeatSort').value) || 0;
+    if (!title) { alert('请输入标题'); return; }
+    const existing = await apiGet('/api/home/featured');
+    const cards = [...(existing || []), { title, description, actionType, actionValue, sortOrder }];
+    const resp = await apiPost('/api/home/featured', { cards });
+    if (resp && resp.ok) { closeModal(); loadFeatured(); } else { alert('保存失败'); }
+}
+
+async function deleteFeatured(id) {
+    if (!confirm('确定删除此卡片？')) return;
+    const existing = await apiGet('/api/home/featured');
+    const cards = (existing || []).filter(f => f.id !== id);
+    const resp = await apiPost('/api/home/featured', { cards });
+    if (resp && resp.ok) loadFeatured(); else alert('删除失败');
+}
+
+// ======== Notices ========
+let noticeImageUrl = '';
+
+async function loadNotices() {
+    const data = await apiGet('/api/home/notices');
+    const tbody = document.getElementById('noticesTable');
+    if (!data || !data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;">暂无数据</td></tr>'; return; }
+    tbody.innerHTML = data.map(n => `<tr>
+        <td>${n.id}</td>
+        <td>${n.imageUrl ? '<img class="img-sm" src="' + esc(n.imageUrl) + '">' : '-'}</td>
+        <td>${esc(n.title)}</td><td>${esc(n.content)}</td><td>${n.createdAt}</td>
+        <td><div class="btn-group"><button class="btn btn-danger btn-sm" onclick="deleteNotice(${n.id})">删除</button></div></td>
+    </tr>`).join('');
+}
+
+function showNoticeForm() {
+    noticeImageUrl = '';
+    openModal('发布公告', `
+        <div class="form-row"><label>标题</label><input id="fNoticeTitle" placeholder="公告标题"></div>
+        <div class="form-row"><label>内容</label><textarea id="fNoticeContent" placeholder="公告内容"></textarea></div>
+        <div class="form-row"><label>配图（可选）</label>
+            <input type="file" id="fNoticeImage" accept="image/*" onchange="uploadNoticeImage(this)">
+            <div id="noticeImagePreview" style="margin-top:8px;"></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="saveNotice()">发布</button><button class="btn" onclick="closeModal()">取消</button></div>
+    `);
+}
+
+async function uploadNoticeImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+        const resp = await fetch(API_BASE + '/api/upload/notice-image', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token },
+            body: formData
+        });
+        const data = await resp.json();
+        if (resp.ok && data.url) {
+            noticeImageUrl = data.url;
+            document.getElementById('noticeImagePreview').innerHTML = '<img src="' + data.url + '" style="max-width:200px;border-radius:8px;">';
+        } else { alert('图片上传失败'); }
+    } catch (e) { alert('上传错误: ' + e.message); }
+}
+
+async function saveNotice() {
+    const title = document.getElementById('fNoticeTitle').value.trim();
+    const content = document.getElementById('fNoticeContent').value.trim();
+    if (!title || !content) { alert('请填写标题和内容'); return; }
+    const body = { title, content, imageUrl: noticeImageUrl };
+    const resp = await apiPost('/api/home/notices', body);
+    if (resp && (resp.ok || resp.status === 201)) { closeModal(); loadNotices(); } else { alert('发布失败'); }
+}
+
+async function deleteNotice(id) {
+    if (!confirm('确定删除此公告？')) return;
+    const resp = await apiDelete('/api/home/notices/' + id);
+    if (resp && resp.ok) loadNotices(); else alert('删除失败');
+}
+
+// Utility
+function esc(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+// ======== Posts ========
+let postsPage = 0;
+const postsSize = 20;
+
+async function loadPosts() {
+    const data = await apiGet(`/api/posts?page=${postsPage}&size=${postsSize}`);
+    const tbody = document.getElementById('postsTable');
+    const posts = data.posts || [];
+    const total = data.total || 0;
+    const totalPages = Math.ceil(total / postsSize) || 1;
+    if (!posts.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;">暂无数据</td></tr>'; return; }
+    tbody.innerHTML = posts.map(p => `<tr>
+        <td>${p.id}</td><td>${esc(p.title)}</td><td>${esc(p.author)}</td><td>${p.likes}</td>
+        <td>${p.createdAt || ''}</td>
+        <td><div class="btn-group"><button class="btn btn-danger btn-sm" onclick="deletePost(${p.id})">删除</button></div></td>
+    </tr>`).join('');
+
+    document.getElementById('postsPagination').innerHTML = `
+        <button onclick="postsPrev()" ${postsPage <= 0 ? 'disabled' : ''}>上一页</button>
+        <span>第 ${postsPage + 1} / ${totalPages} 页 (共 ${total} 条)</span>
+        <button onclick="postsNext()" ${postsPage >= totalPages - 1 ? 'disabled' : ''}>下一页</button>
+    `;
+}
+
+function postsPrev() { if (postsPage > 0) { postsPage--; loadPosts(); } }
+function postsNext() { postsPage++; loadPosts(); }
+
+async function deletePost(id) {
+    if (!confirm('确定删除此帖子？')) return;
+    const resp = await apiDelete('/api/admin/posts/' + id);
+    if (resp && resp.ok) loadPosts(); else alert('删除失败');
+}
+
+// ======== Users ========
+async function loadUsers() {
+    const data = await apiGet('/api/admin/users');
+    const tbody = document.getElementById('usersTable');
+    const users = data.users || [];
+    if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;">暂无数据</td></tr>'; return; }
+    tbody.innerHTML = users.map(u => `<tr>
+        <td>${u.id}</td>
+        <td>${u.avatar ? '<img class="avatar-sm" src="' + esc(u.avatar) + '" onerror="this.style.display=\'none\'">' : '<div class="avatar-placeholder">${esc(u.username.charAt(0).toUpperCase())}</div>'}</td>
+        <td>${esc(u.username)}</td>
+        <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
+        <td>${u.createdAt}</td>
+        <td><div class="btn-group">
+            <button class="btn btn-sm btn-primary" onclick="showUserEdit(${u.id}, '${esc(u.username)}', '${u.role}', '${esc(u.avatar || '')}')">编辑</button>
+            ${u.username !== 'root' ? `
+                <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id}, '${esc(u.username)}')">删除</button>
+            ` : ''}
+        </div></td>
+    </tr>`).join('');
+}
+
+function showUserEdit(id, username, currentRole, currentAvatar) {
+    openModal('编辑用户: ' + username, `
+        <div style="text-align:center;margin-bottom:16px;">
+            <div id="editAvatarWrap">
+                ${currentAvatar ? '<img class="avatar-lg" src="' + currentAvatar + '" id="editAvatarImg">' : '<div class="avatar-lg" style="display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;background:linear-gradient(135deg,#667eea,#764ba2);" id="editAvatarImg">' + username.charAt(0).toUpperCase() + '</div>'}
+            </div>
+            <input type="file" id="fEditAvatar" accept="image/*" onchange="uploadUserAvatar(${id}, this)" style="margin-top:8px;font-size:13px;">
+        </div>
+        <div class="form-row"><label>角色</label>
+            <select id="fEditRole">
+                <option value="user" ${currentRole === 'user' ? 'selected' : ''}>普通用户</option>
+                <option value="admin" ${currentRole === 'admin' ? 'selected' : ''}>管理员</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" onclick="saveUserEdit(${id})">保存</button>
+            <button class="btn" onclick="closeModal()">取消</button>
+        </div>
+    `);
+}
+
+async function uploadUserAvatar(userId, input) {
+    const file = input.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+        const resp = await fetch(API_BASE + '/api/admin/users/' + userId + '/avatar', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token },
+            body: formData
+        });
+        const data = await resp.json();
+        if (resp.ok && data.url) {
+            document.getElementById('editAvatarImg').src = data.url;
+        } else { alert('头像上传失败'); }
+    } catch (e) { alert('上传错误: ' + e.message); }
+}
+
+async function saveUserEdit(id) {
+    const role = document.getElementById('fEditRole').value;
+    const resp = await apiPut('/api/admin/users/' + id + '/info', { role });
+    if (resp && resp.ok) { closeModal(); loadUsers(); } else { alert('保存失败'); }
+}
+
+async function toggleRole(id, currentRole) {
+    const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    if (!confirm(`确定将此用户角色更改为 ${newRole}？`)) return;
+    const resp = await apiPut('/api/admin/users/' + id + '/role', { role: newRole });
+    if (resp && resp.ok) loadUsers(); else alert('操作失败');
+}
+
+async function deleteUser(id, username) {
+    if (!confirm(`确定删除用户 "${username}"？此操作不可恢复！`)) return;
+    const resp = await apiDelete('/api/admin/users/' + id);
+    if (resp && resp.ok) loadUsers(); else { const d = resp ? await resp.json() : {}; alert(d.error || '删除失败'); }
+}
+
+// ======== Versions ========
+async function loadVersions() {
+    const data = await apiGet('/api/admin/versions');
+    const tbody = document.getElementById('versionsTable');
+    const versions = data.versions || [];
+    if (!versions.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999;">暂无数据</td></tr>'; return; }
+    tbody.innerHTML = versions.map(v => `<tr>
+        <td>${v.id}</td><td>${v.versionCode}</td><td>${esc(v.versionName)}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(v.changelog)}">${esc(v.changelog)}</td>
+        <td>${v.forceUpdate ? '<span class="badge badge-yes">是</span>' : '<span class="badge badge-no">否</span>'}</td>
+        <td>${v.createdAt}</td>
+        <td><div class="btn-group"><button class="btn btn-danger btn-sm" onclick="deleteVersion(${v.id})">删除</button></div></td>
+    </tr>`).join('');
+}
+
+function showVersionForm() {
+    openModal('发布新版本', `
+        <div class="form-row"><label>版本号 (versionCode)</label><input id="fVerCode" type="number" placeholder="如 2"></div>
+        <div class="form-row"><label>版本名 (versionName)</label><input id="fVerName" placeholder="如 1.1.0"></div>
+        <div class="form-row"><label>更新日志</label><textarea id="fVerLog" placeholder="本次更新内容..."></textarea></div>
+        <div class="form-row"><label>APK 下载地址</label><input id="fVerUrl" placeholder="/files/app-v1.1.0.apk"></div>
+        <div class="form-row"><label><input type="checkbox" id="fVerForce"> 强制更新</label></div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="saveVersion()">发布</button><button class="btn" onclick="closeModal()">取消</button></div>
+    `);
+}
+
+async function saveVersion() {
+    const versionCode = parseInt(document.getElementById('fVerCode').value);
+    const versionName = document.getElementById('fVerName').value.trim();
+    const changelog = document.getElementById('fVerLog').value.trim();
+    const apkUrl = document.getElementById('fVerUrl').value.trim();
+    const forceUpdate = document.getElementById('fVerForce').checked;
+    if (!versionCode || !versionName) { alert('请填写版本号和版本名'); return; }
+    const resp = await apiPost('/api/admin/versions', { versionCode, versionName, changelog, apkUrl, forceUpdate });
+    if (resp && (resp.ok || resp.status === 201)) { closeModal(); loadVersions(); } else { alert('发布失败'); }
+}
+
+async function deleteVersion(id) {
+    if (!confirm('确定删除此版本记录？')) return;
+    const resp = await apiDelete('/api/admin/versions/' + id);
+    if (resp && resp.ok) loadVersions(); else alert('删除失败');
+}
+
+// ======== Auto-login check ========
+(function init() {
+    if (token) {
+        apiGet('/api/auth/me').then(user => {
+            if (user && user.role === 'admin') { showApp(); }
+            else { doLogout(); }
+        }).catch(() => { doLogout(); });
+    }
+})();
+
+document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') doLogin();
+});
+
+</script>
+</body>
+</html>

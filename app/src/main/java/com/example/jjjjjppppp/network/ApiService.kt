@@ -1,6 +1,7 @@
 package com.example.jjjjjppppp.network
 
 import com.example.jjjjjppppp.network.dto.*
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -43,4 +44,29 @@ interface ApiService {
 
     @GET("api/home/config")
     suspend fun getHomeConfig(): Response<HomeConfigDto>
+
+    // ==================== Auth ====================
+
+    @POST("api/auth/register")
+    suspend fun register(@Body request: RegisterRequestDto): Response<AuthResponseDto>
+
+    @POST("api/auth/login")
+    suspend fun login(@Body request: LoginRequestDto): Response<AuthResponseDto>
+
+    @GET("api/auth/me")
+    suspend fun getProfile(): Response<UserDto>
+
+    // ==================== Version ====================
+
+    @GET("api/version/check")
+    suspend fun checkVersion(@Query("versionCode") versionCode: Int): Response<VersionCheckResponseDto>
+
+    @GET("api/version/latest")
+    suspend fun getLatestVersion(): Response<VersionInfoDto>
+
+    // ==================== Upload ====================
+
+    @Multipart
+    @POST("api/upload/avatar")
+    suspend fun uploadAvatar(@Part image: MultipartBody.Part): Response<UploadResponseDto>
 }

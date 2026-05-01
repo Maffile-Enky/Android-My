@@ -47,4 +47,7 @@ dependencies {
     implementation("com.h2database:h2:2.3.232")
 
     implementation("ch.qos.logback:logback-classic:1.5.12")
+
+    implementation("com.auth0:java-jwt:4.4.0")
+    implementation("at.favre.lib:bcrypt:0.10.2")
 }

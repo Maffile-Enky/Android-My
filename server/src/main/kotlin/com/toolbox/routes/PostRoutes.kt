@@ -61,7 +61,9 @@ fun Route.postRoutes(postService: PostService) {
                 return@delete
             }
             val author = call.request.queryParameters["author"] ?: ""
-            if (postService.deletePost(id, author)) {
+            // Admin can delete any post, regular users can only delete their own
+            val isAdmin = call.requireAdmin()
+            if (isAdmin || postService.deletePost(id, author)) {
                 call.respond(HttpStatusCode.OK, "Deleted")
             } else {
                 call.respond(HttpStatusCode.NotFound, "Post not found or author mismatch")

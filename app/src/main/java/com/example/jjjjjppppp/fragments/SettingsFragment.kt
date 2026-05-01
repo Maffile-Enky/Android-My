@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.jjjjjppppp.R
 import com.example.jjjjjppppp.utils.ThemeManager
+import com.example.jjjjjppppp.utils.UpdateChecker
 
 class SettingsFragment : Fragment() {
 
@@ -55,7 +56,7 @@ class SettingsFragment : Fragment() {
             Toast.makeText(requireContext(), getString(R.string.cache_cleared), Toast.LENGTH_SHORT).show()
         }
         view.findViewById<View>(R.id.llCheckUpdate).setOnClickListener {
-            Toast.makeText(requireContext(), getString(R.string.latest_version), Toast.LENGTH_SHORT).show()
+            UpdateChecker.checkForUpdate(requireContext())
         }
         view.findViewById<View>(R.id.llAbout).setOnClickListener {
             Toast.makeText(requireContext(), getString(R.string.about_info), Toast.LENGTH_LONG).show()

@@ -33,6 +33,7 @@ object FeaturedCardsTable : LongIdTable("home_featured") {
 object NoticesTable : LongIdTable("home_notices") {
     val title = varchar("title", 200)
     val content = text("content")
+    val imageUrl = varchar("image_url", 500).default("")
     val createdAt = varchar("created_at", 20)
 }
 
@@ -41,6 +42,10 @@ object HomeRepository {
     fun initTable() {
         transaction {
             SchemaUtils.create(BannersTable, QuickToolsTable, FeaturedCardsTable, NoticesTable)
+            // Migration: add image_url column if missing
+            try {
+                exec("ALTER TABLE home_notices ADD COLUMN IF NOT EXISTS image_url VARCHAR(500) DEFAULT ''")
+            } catch (_: Exception) {}
             seedDefaultData()
         }
     }
@@ -177,14 +182,15 @@ object HomeRepository {
             .map { it.toNotice() }
     }
 
-    fun addNotice(title: String, content: String): NoticeItem = transaction {
+    fun addNotice(title: String, content: String, imageUrl: String = ""): NoticeItem = transaction {
         val now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         val id = NoticesTable.insertAndGetId {
             it[NoticesTable.title] = title
             it[NoticesTable.content] = content
+            it[NoticesTable.imageUrl] = imageUrl
             it[createdAt] = now
         }
-        NoticeItem(id.value, title, content, now)
+        NoticeItem(id.value, title, content, imageUrl, now)
     }
 
     fun deleteNotice(id: Long): Boolean = transaction {
@@ -243,6 +249,7 @@ object HomeRepository {
         id = this[NoticesTable.id].value,
         title = this[NoticesTable.title],
         content = this[NoticesTable.content],
+        imageUrl = this[NoticesTable.imageUrl],
         createdAt = this[NoticesTable.createdAt]
     )
 }

@@ -22,6 +22,6 @@ class HomeService {
 
     // Notices
     fun getNotices(): List<NoticeItem> = HomeRepository.getAllNotices()
-    fun addNotice(request: NoticeSaveRequest): NoticeItem = HomeRepository.addNotice(request.title, request.content)
+    fun addNotice(request: NoticeSaveRequest): NoticeItem = HomeRepository.addNotice(request.title, request.content, request.imageUrl)
     fun deleteNotice(id: Long): Boolean = HomeRepository.deleteNotice(id)
 }
